@@ -18,7 +18,8 @@ public class AdminUserListEntity {
     private Long usersId;
     //ユーザ名
     private String usersName;
-    private String usersMail;     // 邮件地址
+    // ユーザメールアドレス
+    private String usersMail;
     private int usersRoles;       // 用户权限
     private short usersStatus;     // 用户状态
     private Timestamp createdAtTime; // 创建时间
