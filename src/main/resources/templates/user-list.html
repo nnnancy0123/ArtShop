@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-pwa="true">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>管理員 ｜ お問い合わせ一覧</title>
+
+	<!-- Custom fonts for this template-->
+	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link th:href="@{/assets/css/sb-admin-2.min.css}" rel="stylesheet">
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	<!-- jquery.min.js は bootstrap.bundle.min.js より前に読み込む必要があります -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+	<!-- DataTables JS -->
+	<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+	<style>
+		.custom-modal-width {
+			max-width: 750px;
+			margin-right: 240px !important;
+		}
+	</style>
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<!-- 管理員ページスライド -->
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+			<!-- Sidebar - Brand -->
+			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+				<div class="sidebar-brand-icon rotate-n-15">
+					<i class="fas fa-laugh-wink"></i>
+				</div>
+				<div class="sidebar-brand-text mx-3">管理員ページ</div>
+			</a>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider my-0 border-white">
+
+			<!-- Divider -->
+			<hr class="sidebar-divider">
+			<!-- 管理員プロフィール編集 -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+					aria-expanded="true" aria-controls="collapseTwo">
+					<i class="fas fa-users-cog"></i>
+					<span>プロフィール</span>
+				</a>
+				<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<a class="collapse-item" href="admin-profile.html">権限管理</a>
+						<a class="collapse-item" href="user-inquiry-list.html">サポート管理</a>
+
+					</div>
+				</div>
+			</li>
+			<!-- ユーザ編集 -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+					aria-expanded="true" aria-controls="collapseUtilities">
+					<i class="fas fa-user"></i>
+					<span>ユーザ管理</span>
+				</a>
+				<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+					data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<a class="collapse-item" href="user-list.html">ユーザ一覧</a>
+					</div>
+				</div>
+			</li>
+			<!-- 商品編集 -->
+			<li class="nav-item">
+				<a class="nav-link" href="charts.html" data-toggle="collapse" data-target="#collapseshopsetting"
+					aria-expanded="true" aria-controls="collapseshopsetting">
+					<i class="fas fa-cart-arrow-down"></i>
+					<span>商品管理</span></a>
+				<div id="collapseshopsetting" class="collapse show" aria-labelledby="headingPages"
+					data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<a class="collapse-item" href="product-list.html">商品一覧</a>
+						<a class="collapse-item" href="category-settings.html">カテゴリ管理</a>
+					</div>
+				</div>
+			</li>
+			<!-- 注文編集 -->
+			<li class="nav-item">
+				<a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+					aria-controls="collapsePages">
+					<i class="fas fa-clipboard-list"></i>
+					<span>注文管理</span>
+				</a>
+				<div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
+					data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<a class="collapse-item" href="order-list.html">注文一覧</a>
+						<a class="collapse-item" href="order-cancel-return.html">注文キャンセル・返品</a>
+						<a class="collapse-item" href="payment-management.html">決済管理</a>
+					</div>
+				</div>
+			</li>
+			<!-- Divider -->
+			<hr class="sidebar-divider d-none d-md-block">
+
+			<!-- Sidebar Toggler (Sidebar) -->
+			<div class="text-center d-none d-md-inline">
+				<button class="rounded-circle border-0" id="sidebarToggle"></button>
+			</div>
+		</ul>
+		<!-- 管理員ページスライド　END -->
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+					<!-- Sidebar Toggle (Topbar) -->
+					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-5">
+						<i class="fa fa-bars"></i>
+					</button>
+					<!-- Topbar Search -->
+					<form
+						class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+						<div class="input-group">
+							<input type="text" class="form-control bg-light border-0 small" placeholder="検索する"
+								aria-label="Search" aria-describedby="basic-addon2">
+							<div class="input-group-append">
+								<button class="btn btn-primary" type="button">
+									<i class="fas fa-search fa-sm"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+
+					<!-- Topbar Navbar -->
+					<ul class="navbar-nav ml-auto" style="margin-right:20px">
+						<!-- Nav Item - Search Dropdown (Visible Only XS) -->
+						<li class="nav-item dropdown no-arrow d-sm-none">
+							<a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-search fa-fw"></i>
+							</a>
+							<!-- Dropdown - Messages -->
+							<div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+								aria-labelledby="searchDropdown">
+								<form class="form-inline mr-auto w-100 navbar-search">
+									<div class="input-group">
+										<input type="text" class="form-control bg-light border-0 small"
+											placeholder="Search for..." aria-label="Search"
+											aria-describedby="basic-addon2">
+										<div class="input-group-append">
+											<button class="btn btn-primary" type="button">
+												<i class="fas fa-search fa-sm"></i>
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</li>
+						<!-- Nav Item - Messages -->
+						<li class="nav-item dropdown no-arrow mx-1">
+							<a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-bell fa-fw" style="margin-right:10px"></i>
+								<!-- Counter - Messages -->
+								<span class="badge badge-danger badge-counter">7</span>
+							</a>
+							<!-- Dropdown - Messages -->
+							<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+								aria-labelledby="messagesDropdown">
+								<h6 class="dropdown-header">
+									メッセージセンター
+								</h6>
+								<a class="dropdown-item d-flex align-items-center" href="#">
+									<div class="dropdown-list-image mr-3">
+										<img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
+										<div class="status-indicator bg-success"></div>
+									</div>
+									<div class="font-weight-bold">
+										<div class="text-truncate">商品が無事に発送されました。</div>
+										<div class="small text-gray-500">山田太郎 · 58分前</div>
+									</div>
+								</a>
+								<a class="dropdown-item d-flex align-items-center" href="#">
+									<div class="dropdown-list-image mr-3">
+										<img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
+										<div class="status-indicator"></div>
+									</div>
+									<div>
+										<div class="text-truncate">先月の注文について、何か問題がありましたか？</div>
+										<div class="small text-gray-500">佐藤花子 · 1日前</div>
+									</div>
+								</a>
+								<a class="dropdown-item d-flex align-items-center" href="#">
+									<div class="dropdown-list-image mr-3">
+										<img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
+										<div class="status-indicator bg-warning"></div>
+									</div>
+									<div>
+										<div class="text-truncate">お客様のフィードバックをいただき、ありがとうございました！</div>
+										<div class="small text-gray-500">鈴木一郎 · 2日前</div>
+									</div>
+								</a>
+								<a class="dropdown-item d-flex align-items-center" href="#">
+									<div class="dropdown-list-image mr-3">
+										<img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
+										<div class="status-indicator bg-success"></div>
+									</div>
+									<div>
+										<div class="text-truncate">購入した商品に大変満足しています。次回もよろしくお願いします。</div>
+										<div class="small text-gray-500">田中次郎 · 2週間前</div>
+									</div>
+								</a>
+								<a class="dropdown-item text-center small text-gray-500" href="#">さらにメッセージを表示</a>
+						</li>
+						<div class="topbar-divider d-none d-sm-block"></div>
+
+						<!-- Nav Item - User Information -->
+						<li class="nav-item dropdown no-arrow">
+							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="mr-2 d-none d-lg-inline text-gray-600 small">鈴木</span>
+								<img class="img-profile rounded-circle" src="/assets/img/undraw_profile.svg">
+							</a>
+							<!-- Dropdown - User Information -->
+							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+								aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="admin-login.html">
+									<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+									ログアウト
+								</a>
+							</div>
+						</li>
+					</ul>
+				</nav>
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<!-- Page Heading -->
+					<h1 class="h5 mb-2 text-gray-900" style="margin:20px 0px 0px 25px">ユーザ一覧</h1>
+					<div class="col-lg-12 justify-content-between align-items-center">
+						<div class="ps-lg-3 ps-xl-0">
+							<!-- User Inquiry Table -->
+							<div class="py-5">
+								<div class="container mt-4">
+									<!-- 検索とフィルド機能 -->
+									<div class="row mb-3">
+										<div class="col-md-3" style="position: relative;">
+											<input type="text" class="form-control custom-font-select" id="searchUser"
+												placeholder="ユーザ名、メールアドレスで検索" style="padding-right: 40px;">
+											<i class="fa fa-search" aria-hidden="true" id="searchButton"
+												style="position: absolute; right: 30px; top: 45%; transform: translateY(-50%); cursor: pointer;color:grey"></i>
+										</div>
+										<div class="col-md-3">
+											<select class="form-select custom-font-select" id="roleFilter">
+												<option value="すべての役割">すべての役割</option>
+												<option value="会員">会員</option>
+												<option value="非会員">非会員</option>
+											</select>
+											<style>
+												.custom-font-select {
+													font-family: 'IBM Plex Sans JP', sans-serif;
+													font-size: 12px;
+													font-weight: 400;
+													color: #333;
+												}
+											</style>
+										</div>
+										<div class="col-md-2">
+											<button class="btn btn-primary w-100 btn-sm"
+												onclick="filterUsers()">フィルタ</button>
+										</div>
+									</div>
+									<!-- ユーザテーブル -->
+									<div class="table-responsive">
+										<table class="table table-bordered table-striped" id="userTable">
+											<thead>
+												<tr>
+													<th scope="col"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														ユーザID</th>
+													<th scope="col"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														ユーザ名</th>
+													<th scope="col"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														メールアドレス</th>
+													<th scope="col"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														会員種類</th>
+													<th scope="col"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														登録日時</th>
+													<th scope="col"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														可用ポイント</th> <!-- 新增列 -->
+													<th scope="col" class="text-center"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="user : ${adminUserInfoList}" style="font-size:small;">
+													<th scope="row" th:text="${user.usersId}"
+														style="font-weight:300; padding-left: 20px; width: 7%;"></th>
+													<td th:text="${user.usersName}">ユーザ名</td>
+													<td th:text="${user.usersMail}">メールアドレス</td>
+													<td th:text="${user.usersRoles}">会員種類</td>
+													<td
+														th:text="${#dates.format(user.createdAtTime, 'yyyy/MM/dd HH:mm:ss')}">
+														登録日時</td>
+													<td th:text="${user.usersPoints}">ポイント</td>
+													<td class="text-center">
+														<a href="#" class="btn btn-sm btn-primary"
+															data-bs-toggle="modal" data-bs-target="#editModal">編集</a>
+														<a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+															data-bs-target="#deleteModal"
+															th:attr="onclick='confirmDelete(' + ${user.usersId} + ')'">削除</a>
+														<a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal"
+															data-bs-target="#orderHistoryModal">注文履歴</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- ページング -->
+									<nav aria-label="Page navigation example">
+										<ul class="pagination justify-content-center">
+											<li class="page-item disabled">
+												<a class="page-link" href="#" tabindex="-1" aria-disabled="true">前へ</a>
+											</li>
+											<li class="page-item"><a class="page-link" href="#">1</a></li>
+											<li class="page-item"><a class="page-link" href="#">2</a></li>
+											<li class="page-item"><a class="page-link" href="#">3</a></li>
+											<li class="page-item">
+												<a class="page-link" href="#">次へ</a>
+											</li>
+										</ul>
+									</nav>
+									<!-- 編集モーダル -->
+									<div class="modal fade" id="editModal" tabindex="-1"
+										aria-labelledby="editModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" style="margin-right:370px;">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="editModalLabel">ユーザ編集</h5>
+													<button type="button" class="btn-close btn-sm"
+														data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<form id="editUserForm">
+														<div class="mb-3">
+															<label for="editUserName" class="form-label text-primary"
+																style="font-size: 13px;">ユーザ名</label>
+															<input type="text" class="form-control" id="editUserName"
+																style="font-size: 13px;" value="佐藤花子">
+														</div>
+														<div class="mb-3">
+															<label for="editUserEmail" class="form-label text-primary"
+																style="font-size: 13px;">メールアドレス</label>
+															<input type="email" class="form-control" id="editUserEmail"
+																style="font-size: 13px;"
+																value="hanako.sato@example.com">
+														</div>
+														<div class="mb-3">
+															<label for="editUserType" class="form-label text-primary"
+																style="font-size: 13px;">会員種類</label>
+															<select class="form-select" style="font-size: 13px;"
+																id="editUserType">
+																<option value="会員" selected>会員</option>
+																<option value="非会員">非会員</option>
+															</select>
+														</div>
+														<!-- クーポンフィールド -->
+														<div class="mb-3">
+															<label for="editUserCoupon" class="form-label text-primary"
+																style="font-size: 13px;">利用可能のポイント</label>
+															<input type="text" class="form-control" id="editUserCoupon"
+																style="font-size: 13px;" value="1000">
+														</div>
+														<!-- 郵便番号フィールド -->
+														<div class="mb-3">
+															<label for="editUserPostalCode"
+																class="form-label text-primary"
+																style="font-size: 13px;">郵便番号</label>
+															<div class="input-group">
+																<input type="text" class="form-control"
+																	id="editUserPostalCode" style="font-size: 13px;"
+																	placeholder="123-4567">
+																<button type="button"
+																	class="btn btn-outline-primary btn-sm"
+																	style="font-size: 13px;"
+																	onclick="searchAddress()">検索</button>
+															</div>
+														</div>
+														<!-- 住所フィールド -->
+														<div class="mb-3">
+															<label for="editUserAddress" class="form-label text-primary"
+																style="font-size: 13px;">住所</label>
+															<input type="text" class="form-control" id="editUserAddress"
+																style="font-size: 13px;" value="東京都新宿区西新宿1-1-1">
+														</div>
+														<div class="modal-footer justify-content-center"
+															style="border: none;">
+															<button type="submit"
+																class="btn btn-primary btn-sm mr-3">更新する</button>
+															<button type="button" class="btn btn-secondary btn-sm"
+																data-bs-dismiss="modal">閉じる</button>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 削除モーダル -->
+									<div class="modal fade" id="deleteModal" tabindex="-1"
+										aria-labelledby="deleteModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" style="margin-right:350px;">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="deleteModalLabel">削除確認</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal"
+														aria-label="Close"></button>
+												</div>
+												<div class="modal-body"
+													style="font-weight:300; font-size:13px;text-align: center;">
+													本当にこのユーザを削除しますか？
+												</div>
+												<div class="modal-footer" style="border:none">
+													<button type="button" class="btn btn-secondary btn-sm"
+														data-bs-dismiss="modal">キャンセル</button>
+													<!-- Adding delete functionality -->
+													<button type="button" class="btn btn-danger btn-sm"
+														onclick="deleteUser()">削除する</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 注文履歴モーダル -->
+									<div class="modal fade" id="orderHistoryModal" tabindex="-1"
+										aria-labelledby="orderHistoryModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-lg modal-dialog-centered"
+											style="margin-right:200px;">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="orderHistoryModalLabel">注文履歴 - 佐藤花子</h5>
+													<button type="button" class="btn-close btn-sm"
+														data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<table class="table table-striped">
+														<thead>
+															<tr>
+																<th scope="col" style="font-weight:300;">注文日</th>
+																<th scope="col" style="font-weight:300;">商品</th>
+																<th scope="col" style="font-weight:300;">合計金額</th>
+																<th scope="col" style="font-weight:300;">ステータス</th>
+																<th scope="col" style="font-weight:300;">支払い方法</th>
+																<th scope="col" style="font-weight:300;">住所</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td style="font-weight:300; font-size:12px">1001</td>
+																<td style="font-weight:300; font-size:12px">2024/8/10
+																</td>
+																<td style="font-weight:300; font-size:12px">商品A</td>
+																<td style="font-weight:300; font-size:12px">¥10,000</td>
+																<td style="font-weight:300; font-size:12px;">
+																	<span
+																		style="background-color: rgb(154, 247, 216); padding: 2px 10px; border-radius: 3px;">配送中</span>
+																</td>
+																<td style="font-weight:300; font-size:12px">クレジットカード
+																</td>
+																<td style="font-weight:300; font-size:12px"><a href="#"
+																		data-bs-toggle="modal"
+																		data-bs-target="#addressModal1">住所詳細</a></td>
+															</tr>
+															<tr>
+																<td style="font-weight:300; font-size:12px">1002</td>
+																<td style="font-weight:300; font-size:12px">2024/7/25
+																</td>
+																<td style="font-weight:300; font-size:12px">商品B</td>
+																<td style="font-weight:300; font-size:12px">¥15,000</td>
+																<td style="font-weight:300; font-size:12px"><span
+																		style="background-color: rgb(251, 143, 143); padding: 2px 10px; border-radius: 3px;">完了
+																</td>
+																<td style="font-weight:300; font-size:12px">銀行振込</td>
+																<td style="font-weight:300; font-size:12px"><a href="#"
+																		data-bs-toggle="modal"
+																		data-bs-target="#addressModal2">住所詳細</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<div class="modal-footer" style="border:none">
+													<button type="button" class="btn btn-secondary btn-sm"
+														data-bs-dismiss="modal">閉じる</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 住所の詳細モーダル1 -->
+									<div class="modal fade" id="addressModal1" tabindex="-1"
+										aria-labelledby="addressModalLabel1" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" style="margin-right:360px;">
+											<div class="modal-content">
+												<div class="modal-header" style="border:none">
+													<h5 class="modal-title" id="addressModalLabel1"
+														style="font-weight:200; font-size:13px;">
+														住所詳細 - 注文ID: 1001
+													</h5>
+													<button type="button" class="btn-close btn-sm"
+														data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<h5 class="modal-title" id="addressModalLabel1"
+														style="font-weight:300; font-size:13px;text-align: center;">
+														東京都新宿区西新宿1-1-1</h5>
+												</div>
+												<div class="modal-footer" style="border:none">
+													<button type="button" class="btn btn-primary btn-sm"
+														onclick="returnToOrderHistory()">戻る</button>
+													<button type="button" class="btn btn-secondary btn-sm"
+														data-bs-dismiss="modal">閉じる</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 住所の詳細モーダル2 -->
+									<div class="modal fade" id="addressModal2" tabindex="-1"
+										aria-labelledby="addressModalLabel2" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" style="margin-right:360px;">
+											<div class="modal-content">
+												<div class="modal-header" style="border:none">
+													<h5 class="modal-title" id="addressModalLabel2"
+														style="font-weight:200; font-size:13px">
+														住所詳細 - 注文ID: 1002
+													</h5>
+													<button type="button" class="btn-close btn-sm"
+														data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<h5 class="modal-title"
+														style="font-weight:300; font-size:13px;text-align: center;">
+														大阪市中央区難波1-2-3</h5>
+												</div>
+												<div class="modal-footer" style="border:none">
+													<button type="button" class="btn btn-primary btn-sm"
+														onclick="returnToOrderHistory()">戻る</button>
+													<button type="button" class="btn btn-secondary btn-sm"
+														data-bs-dismiss="modal">閉じる</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Footer -->
+				<footer class="sticky-footer fs-xs text-center text-sm-start"
+					style="border: none; border-top: none; box-shadow: none;">
+					<div class="container my-auto">
+						<div class="copyright text-center my-auto">
+							<span>Copyright &copy; LANLANCOMPANY</span>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
+
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top">
+			<i class="fas fa-angle-up"></i>
+		</a>
+		<!-- Bootstrap core JavaScript-->
+		<script src="vendor/jquery/jquery.min.js"></script>
+		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+		<!-- Core plugin JavaScript-->
+		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Bootstrap + Theme scripts -->
+		<script th:src="@{/assets/js/theme.min.js}"></script>
+		<!-- Custom scripts for all pages-->
+		<script th:src="@{/assets/js/sb-admin-2.min.js}"></script>
+
+		<script>
+			document.getElementById('searchButton').addEventListener('click', function () {
+				filterUsers();
+			});
+			function filterUsers() {
+				const searchValue = document.getElementById('searchUser').value.toLowerCase();
+				const roleFilter = document.getElementById('roleFilter').value;
+				const table = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+				const rows = table.getElementsByTagName('tr');
+				for (let i = 0; i < rows.length; i++) {
+					const userName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
+					const email = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+					const role = rows[i].getElementsByTagName('td')[2].innerText;
+					const matchesSearch = userName.includes(searchValue) || email.includes(searchValue);
+					const matchesRole = roleFilter === "すべての役割" || role === roleFilter;
+					if (matchesSearch && matchesRole) {
+						rows[i].style.display = "";
+					} else {
+						rows[i].style.display = "none";
+					}
+				}
+			}
+
+			document.getElementById('searchUser').addEventListener('keypress', function (e) {
+				if (e.key === 'Enter') {
+					filterUsers();
+				}
+			});
+		</script>
+		<script>
+			function returnToOrderHistory() {
+				// 現在の住所詳細モーダルを閉じる
+				$('#addressModal1').modal('hide');
+				// 注文履歴モーダルを開く
+				$('#orderHistoryModal').modal('show');
+				// 現在の住所詳細モーダルを閉じる
+				$('#addressModal2').modal('hide');
+			}
+		</script>
+
+		<script>
+			let userToDelete = ''; // 削除するユーザIDを保持する変数
+			// 削除するユーザを確認する関数
+			function confirmDelete(userId) {
+				userToDelete = userId; // 削除するユーザIDを保持
+			}
+			function deleteUser() {
+				if (userToDelete) {
+					let userRow = document.getElementById(userToDelete); // 削除するユーザの行を取得
+					if (userRow) {
+						userRow.remove(); // ユーザ行を削除
+					}
+					// jQueryを使用してモーダルを閉じる
+					$('#deleteModal').modal('hide'); // モーダルを閉じる
+					// 変数をリセット
+					userToDelete = '';
+				}
+			}
+		</script>
+
+		<script>
+			// 郵便番号で住所を検索する関数
+			function searchAddress() {
+				const postalCode = document.getElementById('editUserPostalCode').value.replace('-', '').trim(); // ハイフンを削除し、余分な空白も削除
+				if (postalCode === "") {
+					document.getElementById('editUserAddress').value = "郵便番号を入力してください";
+					return;
+				}
+				const apiUrl = `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postalCode}`;
+				fetch(apiUrl)
+					.then(response => response.json())
+					.then(data => {
+						if (data.status === 200 && data.results) {
+							const result = data.results[0];
+							const address = `${result.address1} ${result.address2} ${result.address3}`;
+							document.getElementById('editUserAddress').value = address; // 住所フィールドに反映
+						} else {
+							document.getElementById('editUserAddress').value = "該当する住所が見つかりません"; // 検索結果がない場合
+						}
+					})
+					.catch(error => {
+						console.error('住所検索中にエラーが発生しました:', error);
+						document.getElementById('editUserAddress').value = "住所検索に失敗しました";
+					});
+			}
+			// Enterキーが押されたときに検索を実行するためのイベントリスナー
+			document.getElementById('editUserPostalCode').addEventListener('keypress', function (e) {
+				if (e.key === 'Enter') {
+					searchAddress();
+				}
+			});
+		</script>
+</body>
+
+</html>
