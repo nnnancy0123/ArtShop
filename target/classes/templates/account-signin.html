@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-pwa="true">
+
+<head>
+	<meta charset="utf-8">
+
+	<!-- Viewport -->
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+
+	<!-- SEO Meta Tags -->
+	<title>LunaSens | [公式]通販サイト・ログイン</title>
+	<meta name="description" content="Cartzilla - Multipurpose Bootstrap E-Commerce HTML Template">
+	<meta name="keywords"
+		content="online shop, e-commerce, online store, market, multipurpose, product landing, cart, checkout, ui kit, light and dark mode, bootstrap, html5, css3, javascript, gallery, slider, mobile, pwa">
+	<meta name="author" content="Createx Studio">
+
+	<!-- Webmanifest + Favicon / App icons -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="icon" type="image/png" href="/assets/app-icons/icon-32x32.png" sizes="32x32">
+	<link rel="apple-touch-icon" href="/assets/app-icons/icon-180x180.png">
+
+	<!-- Theme switcher (color modes) -->
+	<script th:src="@{/assets/js/theme-switcher.js}"></script> <!-- Corrected -->
+
+	<!-- Preloaded local web font (Inter) -->
+	<link rel="preload" th:href="@{/assets/fonts/inter-variable-latin.woff2}" as="font" type="font/woff2"
+		crossorigin="">
+
+	<!-- Font icons -->
+	<link rel="preload" th:href="@{/assets/icons/cartzilla-icons.woff2}" as="font" type="font/woff2" crossorigin="">
+	<link rel="stylesheet" th:href="@{/assets/icons/cartzilla-icons.min.css}">
+
+	<!-- Bootstrap + Theme styles -->
+	<link rel="preload" th:href="@{/assets/css/theme.min.css}" as="style">
+	<link rel="stylesheet" th:href="@{/assets/css/theme.min.css}" id="theme-styles">
+	<link rel="preload" th:href="@{/assets/css/theme.rtl.min.css}" as="style">
+
+</head>
+
+<!-- Body -->
+
+<body>
+	<!-- Page content -->
+	<main class="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style="max-width: 1920px">
+		<div class="d-lg-flex">
+
+			<!-- Login form + Footer -->
+			<div class="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style="max-width: 416px">
+
+				<!-- Logo -->
+				<header class="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
+					<a th:href="@{/homepage.html}" class="navbar-brand pt-0">
+						<span class="d-flex flex-shrink-0 text-primary me-2">
+							<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+								<path
+									d="M36 18.01c0 8.097-5.355 14.949-12.705 17.2a18.12 18.12 0 0 1-5.315.79C9.622 36 2.608 30.313.573 22.611.257 21.407.059 20.162 0 18.879v-1.758c.02-.395.059-.79.099-1.185.099-.908.277-1.817.514-2.686C2.687 5.628 9.682 0 18 0c5.572 0 10.551 2.528 13.871 6.517 1.502 1.797 2.648 3.91 3.359 6.201.494 1.659.771 3.436.771 5.292z"
+									fill="currentColor"></path>
+								<g fill="#fff">
+									<path
+										d="M17.466 21.624c-.514 0-.988-.316-1.146-.829-.198-.632.138-1.303.771-1.501l7.666-2.469-1.205-8.254-13.317 4.621a1.19 1.19 0 0 1-1.521-.75 1.19 1.19 0 0 1 .751-1.521l13.89-4.818c.553-.197 1.166-.138 1.64.158a1.82 1.82 0 0 1 .85 1.284l1.344 9.183c.138.987-.494 1.994-1.482 2.33l-7.864 2.528-.375.04zm7.31.138c-.178-.632-.85-1.007-1.482-.81l-5.177 1.58c-2.331.79-3.28.02-3.418-.099l-6.56-8.412a4.25 4.25 0 0 0-4.406-1.758l-3.122.987c-.237.889-.415 1.777-.514 2.686l4.228-1.363a1.84 1.84 0 0 1 1.857.81l6.659 8.551c.751.948 2.015 1.323 3.359 1.323.909 0 1.857-.178 2.687-.474l5.078-1.54c.632-.178 1.008-.829.81-1.481z">
+									</path>
+									<use href="#czlogo"></use>
+									<use href="#czlogo" x="8.516" y="-2.172"></use>
+								</g>
+								<defs>
+									<path id="czlogo"
+										d="M18.689 28.654a1.94 1.94 0 0 1-1.936 1.935 1.94 1.94 0 0 1-1.936-1.935 1.94 1.94 0 0 1 1.936-1.935 1.94 1.94 0 0 1 1.936 1.935z">
+									</path>
+								</defs>
+							</svg>
+						</span>
+						LunaSens
+					</a>
+				</header>
+
+				<h1 class="h3 mt-auto">ログイン/会員登録</h1>
+				<div class="nav fs-sm mb-4">
+					IDをお持ちでない方？
+					<a class="nav-link text-decoration-underline p-0 ms-2 text-primary"
+						th:href="@{/account-signup.html}">新規登録</a>
+				</div>
+
+				<!-- Form -->
+				<form class="needs-validation" novalidate="">
+					<div class="position-relative mb-4">
+						<input type="email" class="form-control form-control-lg" placeholder="メールアドレス" required="">
+						<div class="invalid-tooltip bg-transparent py-0">有効なメールアドレスを入力してください！</div>
+					</div>
+					<div class="mb-4">
+						<div class="password-toggle">
+							<input type="password" class="form-control form-control-lg" placeholder="パスワード" required="">
+							<div class="invalid-tooltip bg-transparent py-0">パスワードが正しくありません！</div>
+							<label class="password-toggle-button fs-lg" aria-label="Show/hide password">
+								<input type="checkbox" class="btn-check">
+							</label>
+						</div>
+					</div>
+					<div class="d-flex align-items-center justify-content-between mb-0">
+						<div class="form-check me-0">
+							<input type="checkbox" class="form-check-input " id="remember-30">
+							<label for="remember-30" class="form-check-label">ログインしたままにする</label>
+						</div>
+					</div>
+					<div class="nav d-flex align-items-center justify-content-between mb-3" style="margin-left: 20px;">
+						<a class="nav-link animate-underline p-1" th:href="@{/password-recovery.html}">
+							<span class="animate-target text-info" style="font-size: 12px;">パスワードをお忘れの方はこちら</span>
+						</a>
+					</div>
+					<button type="submit" class="btn btn-lg btn-primary w-100"
+						style="background-color: hsl(0, 100%, 75%);">ログイン</button>
+				</form>
+
+				<!-- Divider -->
+				<div class="d-flex align-items-center my-4 mb-3">
+					<hr class="w-100 m-0 text-info">
+					<span class="text-body-emphasis fw-medium text-nowrap mx-3"
+						style="font-size: 13px;">以外のアカウントでログイン</span>
+					<hr class="w-100 m-0 text-info">
+				</div>
+
+				<!-- Social login -->
+				<div class="d-flex flex-column flex-sm-row gap-3 pb-4 mb-3 mb-lg-4">
+					<button type="button" class="btn btn-lg btn-outline-secondary w-100 px-2">
+						<i class="ci-google ms-1 me-1"></i>
+						Google
+					</button>
+					<button type="button" class="btn btn-lg btn-outline-secondary w-100 px-2">
+						<i class="ci-facebook ms-1 me-1"></i>
+						Facebook
+					</button>
+					<button type="button" class="btn btn-lg btn-outline-secondary w-100 px-2">
+						<i class="bi bi-line"></i>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+							class="bi bi-line ms-1 me-2" viewBox="0 0 16 16">
+							<path
+								d="M8 0c4.411 0 8 2.912 8 6.492 0 1.433-.555 2.723-1.715 3.994-1.678 1.932-5.431 4.285-6.285 4.645-.83.35-.734-.197-.696-.413l.003-.018.114-.685c.027-.204.055-.521-.026-.723-.09-.223-.444-.339-.704-.395C2.846 12.39 0 9.701 0 6.492 0 2.912 3.59 0 8 0ZM5.022 7.686H3.497V4.918a.156.156 0 0 0-.155-.156H2.78a.156.156 0 0 0-.156.156v3.486c0 .041.017.08.044.107v.001l.002.002.002.002a.154.154 0 0 0 .108.043h2.242c.086 0 .155-.07.155-.156v-.56a.156.156 0 0 0-.155-.157Zm.791-2.924a.156.156 0 0 0-.156.156v3.486c0 .086.07.155.156.155h.562c.086 0 .155-.07.155-.155V4.918a.156.156 0 0 0-.155-.156h-.562Zm3.863 0a.156.156 0 0 0-.156.156v2.07L7.923 4.832a.17.17 0 0 0-.013-.015v-.001a.139.139 0 0 0-.01-.01l-.003-.003a.092.092 0 0 0-.011-.009h-.001L7.88 4.79l-.003-.002a.029.029 0 0 0-.005-.003l-.008-.005h-.002l-.003-.002-.01-.004-.004-.002a.093.093 0 0 0-.01-.003h-.002l-.003-.001-.009-.002h-.006l-.003-.001h-.004l-.002-.001h-.574a.156.156 0 0 0-.156.155v3.486c0 .086.07.155.156.155h.56c.087 0 .157-.07.157-.155v-2.07l1.6 2.16a.154.154 0 0 0 .039.038l.001.001.01.006.004.002a.066.066 0 0 0 .008.004l.007.003.005.002a.168.168 0 0 0 .01.003h.003a.155.155 0 0 0 .04.006h.56c.087 0 .157-.07.157-.155V4.918a.156.156 0 0 0-.156-.156h-.561Zm3.815.717v-.56a.156.156 0 0 0-.155-.157h-2.242a.155.155 0 0 0-.108.044h-.001l-.001.002-.002.003a.155.155 0 0 0-.044.107v3.486c0 .041.017.08.044.107l.002.003.002.002a.155.155 0 0 0 .108.043h2.242c.086 0 .155-.07.155-.156v-.56a.156.156 0 0 0-.155-.157H11.81v-.589h1.525c.086 0 .155-.07.155-.156v-.56a.156.156 0 0 0-.155-.157H11.81v-.589h1.525c.086 0 .155-.07.155-.156Z" />
+						</svg>
+						line
+					</button>
+				</div>
+
+				<!-- Footer -->
+				<footer class="mt-auto">
+					<p class="fs-xs mb-0 text-center">
+						© All rights reserved. Made by <span class="animate-underline"><a
+								class="animate-target text-dark-emphasis text-decoration-none"
+								 href="https://createx.studio/" target="_blank" rel="noreferrer">DCNET</a></span>
+					</p>
+				</footer>
+			</div>
+
+			<!-- Cover image visible on screens > 992px wide (lg breakpoint) -->
+			<div class="d-none d-lg-block w-100 py-4 ms-auto" style="max-width: 813px; transform: translateX(-50px);">
+				<!-- 使用 translateX 左へ移動する -->
+				<div class="d-flex flex-column justify-content-end h-100 rounded-5 overflow-hidden">
+					<span class="position-absolute top-0 start-0 w-100 h-100 d-none-dark"
+						style="background: linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)"></span>
+					<span class="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark"
+						style="background: linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)"></span>
+					<div class="ratio position-relative z-2" style="--cz-aspect-ratio: calc(1030 / 1032 * 100%);">
+						<img src="/assets/img/1.jpg" alt="Girl" style="width: 100%; height: auto;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<!-- Bootstrap + Theme scripts -->
+	<script th:src="@{/assets/js/theme.min.js}"></script>
+
+</body>
+<!-- Mirrored from cartzilla.createx.studio/account-signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 18 Aug 2024 11:06:17 GMT -->
+
+</html>
