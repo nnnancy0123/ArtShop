@@ -14,8 +14,10 @@ public class AdminUserListEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 自動増分主キー
-    private Long usersId;         // 用户ID
-    private String usersName;     // 用户名
+    //ユーザD
+    private Long usersId;
+    //ユーザ名
+    private String usersName;
     private String usersMail;     // 邮件地址
     private int usersRoles;       // 用户权限
     private short usersStatus;     // 用户状态
