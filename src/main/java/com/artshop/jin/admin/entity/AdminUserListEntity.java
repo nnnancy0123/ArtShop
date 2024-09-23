@@ -13,25 +13,37 @@ import jakarta.persistence.Table;
 public class AdminUserListEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 自動増分主キー
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //ユーザD
     private Long usersId;
     //ユーザ名
     private String usersName;
     // ユーザメールアドレス
     private String usersMail;
-    private int usersRoles;       // 用户权限
-    private short usersStatus;     // 用户状态
-    private Timestamp createdAtTime; // 创建时间
-    private Timestamp updatedAtTime; // 更新时间
-    private String postCode;      // 邮政编码
-    private String payCard1;      // 支付卡1
-    private String payCard2;      // 支付卡2
-    private String payCard3;      // 支付卡3
-    private String usersAddress1;  // 地址1
-    private String usersAddress2;  // 地址2
-    private String usersAddress3;  // 地址3
-    private int usersPoints;       // 积分
+    // ユーザ権限
+    private int usersRoles;
+    // ユーザステータス
+    private short usersStatus;
+    // 作成時間
+    private Timestamp createdAtTime;
+    // 更新時間
+    private Timestamp updatedAtTime;
+    // 郵便番号
+    private String postCode;
+    //支払いカード1
+    private String payCard1;
+    //支払いカード2
+    private String payCard2;
+    //支払いカード3
+    private String payCard3;
+    //住所１
+    private String usersAddress1;
+    //住所2
+    private String usersAddress2;
+    //住所3
+    private String usersAddress3;
+    // ポイント
+    private int usersPoints;
 
     public Long getUsersId() {
         return usersId;
