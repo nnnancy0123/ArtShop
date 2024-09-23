@@ -168,4 +168,5 @@ public class AdminUserListEntity {
 	public void setUsersPoints(int usersPoints) {
 		this.usersPoints = usersPoints;
 	}
+
 }

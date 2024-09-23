@@ -1,5 +1,6 @@
 package com.artshop.jin.admin.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +64,47 @@ public class AdminUserListService {
 			return null;
 		}
 
+	}
+
+	//ユーザ編集モーダル情報を更新して保存する
+	public AdminUserListObject saveUserinfoById(Long usersId, String name, String email, int role, int points,
+			String postCode, String address1, String address2, String address3) {
+
+		//既存のユーザIDから該当のユーザ情報を取得
+		AdminUserListEntity existingEntity = adminUserListRepository.findById(usersId).orElse(null);
+		
+		if (existingEntity != null) {
+			existingEntity.setUsersName(name);
+			existingEntity.setUsersMail(email);
+			existingEntity.setUsersRoles(role);
+			existingEntity.setUsersPoints(points);
+			existingEntity.setPostCode(postCode);
+			existingEntity.setUsersAddress1(address1);
+			existingEntity.setUsersAddress2(address2);
+			existingEntity.setUsersAddress3(address3);
+			existingEntity.setUpdatedAtTime(new Timestamp(System.currentTimeMillis()));
+
+			//取得した該当のユーザ情報をエンティティに保存する
+			AdminUserListEntity saveUserInfoById = adminUserListRepository.save(existingEntity);
+
+			//保存したユーザ情報がオブジェクトに返却する
+			return new AdminUserListObject(
+					saveUserInfoById.getUsersId(),
+					saveUserInfoById.getUsersName(),
+					saveUserInfoById.getUsersMail(),
+					saveUserInfoById.getUsersRoles(),
+					saveUserInfoById.getUsersStatus(),
+					saveUserInfoById.getCreatedAtTime(),
+					saveUserInfoById.getUpdatedAtTime(),
+					saveUserInfoById.getPostCode(),
+					saveUserInfoById.getUsersAddress1(),
+					saveUserInfoById.getUsersAddress2(),
+					saveUserInfoById.getUsersAddress3(),
+					saveUserInfoById.getUsersPoints());
+		} else {
+			return null;
+
+		}
 	}
 
 }

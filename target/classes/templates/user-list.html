@@ -273,9 +273,9 @@
 										<div class="col-md-3">
 											<select class="form-select custom-font-select" id="roleFilter">
 												<option value="すべての権限">すべての役割</option>
-												<option value="ゲスト">ゲスト</option>
-												<option value="会員">会員</option>
-												<option value="非会員">非会員</option>
+												<option value="0">ゲスト</option>
+												<option value="1">会員</option>
+												<option value="2">非会員</option>
 											</select>
 											<style>
 												.custom-font-select {
@@ -336,7 +336,8 @@
 														<!-- テンプレートエンジンが式を正しく解析するためには、th:attrなどのテンプレートエンジン固有の属性を使用する -->
 														<a href="#" class="btn btn-sm btn-primary"
 															data-bs-toggle="modal" data-bs-target="#editModal"
-															th:attr="data-userid=${user.usersId}" onclick="fetchUserInfo(this)">
+															th:attr="data-userid=${user.usersId}"
+															onclick="fetchUserInfo(this)">
 															編集
 														</a>
 														<!-- 削除ボタン -->
@@ -387,24 +388,24 @@
 															<label for="editUserName" class="form-label text-primary"
 																style="font-size: 13px;">ユーザ名</label>
 															<input type="text" class="form-control" id="editUserName"
-																name="name" style="font-size: 13px;">
+																name="usersName" style="font-size: 13px;">
 														</div>
 														<!-- メールアドレス -->
 														<div class="mb-3">
 															<label for="editUserEmail" class="form-label text-primary"
 																style="font-size: 13px;">メールアドレス</label>
 															<input type="email" class="form-control" id="editUserEmail"
-																name="email" style="font-size: 13px;">
+																name="usersMail" style="font-size: 13px;">
 														</div>
 														<!-- 会員権限 -->
 														<div class="mb-3">
 															<label for="editUserRoles" class="form-label text-primary"
 																style="font-size: 13px;">会員権限</label>
-															<select class="form-select" id="editUserRoles" name="role"
-																style="font-size: 13px;">
-																<option value="ゲスト">ゲスト</option>
-																<option value="会員">会員</option>
-																<option value="非会員">非会員</option>
+															<select class="form-select" id="editUserRoles"
+																name="usersRoles" style="font-size: 13px;">
+																<option value="0">ゲスト</option>
+																<option value="1">会員</option>
+																<option value="2">非会員</option>
 															</select>
 														</div>
 														<!-- 利用可能のポイント -->
@@ -412,7 +413,7 @@
 															<label for="editUserPoints" class="form-label text-primary"
 																style="font-size: 13px;">利用可能のポイント</label>
 															<input type="text" class="form-control" id="editUserPoints"
-																name="points" style="font-size: 13px;">
+																name="usersPoints" style="font-size: 13px;">
 														</div>
 														<!-- 郵便番号 -->
 														<div class="mb-3">
@@ -429,13 +430,31 @@
 																	onclick="searchAddress()">検索</button>
 															</div>
 														</div>
-														<!-- 住所 -->
+														<!-- 住所1 -->
 														<div class="mb-3">
 															<label for="editUserAddress1"
 																class="form-label text-primary"
-																style="font-size: 13px;">住所</label>
+																style="font-size: 13px;">住所1</label>
 															<input type="text" class="form-control"
-																id="editUserAddress1" name="address"
+																id="editUserAddress1" name="usersAddress1"
+																style="font-size: 13px;">
+														</div>
+														<!-- 住所2 -->
+														<div class="mb-3">
+															<label for="editUserAddress2"
+																class="form-label text-primary"
+																style="font-size: 13px;">住所2</label>
+															<input type="text" class="form-control"
+																id="editUserAddress2" name="usersAddress2"
+																style="font-size: 13px;">
+														</div>
+														<!-- 住所3 -->
+														<div class="mb-3">
+															<label for="editUserAddress3"
+																class="form-label text-primary"
+																style="font-size: 13px;">住所3</label>
+															<input type="text" class="form-control"
+																id="editUserAddress3" name="usersAddress3"
 																style="font-size: 13px;">
 														</div>
 														<!-- フッターのボタン -->
@@ -694,7 +713,7 @@
 			function fetchUserInfo(element) {
 				const userId = element.getAttribute('data-userid');  // ユーザーIDを取得
 				console.log("取得したユーザーID:", userId);
-				
+
 				fetch(`/getUserInfo?userId=${userId}`)
 					.then(response => response.json())
 					.then(data => {
@@ -721,34 +740,116 @@
 		</script>
 
 		<script>
-			//編集した内容がバックエンドに送信すること
-			document.getElementById('editUserForm').addEventListener('submit', function (e) {
-				e.preventDefault();
-				// フォームをバックエンドに送信するために、fetch などの方法を使用することができます
-				let formData = {
-					name: document.getElementById('editUserName').value,
-					email: document.getElementById('editUserEmail').value,
-					role: document.getElementById('editUserRoles').value,
-					points: document.getElementById('editUserPoints').value,
-					postalCode: document.getElementById('editUserPostCode').value,
-					address: document.getElementById('editUserAddress1').value
-				};
+			// ユーザーIDを保持する変数
+			let userId;
 
-				// 更新処理を実行します。例えば、fetch API を使用してサーバーに POST リクエストを送信します
-				fetch('/updateUser', {
+			// ユーザー情報を取得し、モーダルに表示する関数
+			function fetchUserInfo(element) {
+				userId = element.getAttribute('data-userid');  // ユーザーIDを取得
+				console.log("取得したユーザーID:", userId);
+
+				fetch(`/getUserInfo?userId=${userId}`)
+					.then(response => response.json())
+					.then(data => {
+						console.log("取得したユーザーデータ:", data);
+						if (data) {
+							// モーダルにデータを入力
+							document.getElementById('editUserName').value = data.usersName || "";
+							document.getElementById('editUserEmail').value = data.usersMail || "";
+							document.getElementById('editUserRoles').value = data.usersRoles || "";
+							document.getElementById('editUserPoints').value = data.usersPoints || 0;
+							document.getElementById('editUserPostCode').value = data.postCode || "";
+							document.getElementById('editUserAddress1').value = data.usersAddress1 || "";
+
+							// モーダルを表示（必要に応じて）
+							$('#editModal').modal('show');
+						} else {
+							console.error("データが受信されませんでした");
+						}
+					})
+					.catch(error => {
+						console.error('ユーザ情報の取得中にエラーが発生しました:', error);
+					});
+			}
+
+			// フォームの送信イベントリスナーを設定
+			document.getElementById('editUserForm').addEventListener('submit', function (e) {
+				e.preventDefault();  // フォームのデフォルト送信動作をキャンセル
+
+				// フォームデータを収集
+				let form = e.target;
+				let formData = new FormData(form);
+
+				// ユーザーIDを追加
+				formData.append('usersId', userId);
+
+				// FormDataをオブジェクトに変換
+				let object = {};
+				formData.forEach((value, key) => {
+					object[key] = value;
+				});
+
+				// 必要に応じて数値型に変換
+				object['usersRoles'] = parseInt(object['usersRoles'], 10);
+				object['usersPoints'] = parseInt(object['usersPoints'], 10);
+
+				// JSON文字列に変換
+				let json = JSON.stringify(object);
+
+				// 更新リクエストを送信
+				fetch('/saveUserInfo', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify(formData),
+					body: json,
 				}).then(response => {
 					if (response.ok) {
-						alert('ユーザ情報が更新されました。');
-						// 更新後、ページをリロードするか、テーブルを再読み込みします
+						alert('ユーザ情報が更新されました。');  // 更新成功のアラートを表示
+						// モーダルを閉じる
+						$('#editModal').modal('hide');
+						// 必要に応じてページを更新
 					} else {
-						alert('更新中にエラーが発生しました。');
+						return response.text().then(text => {
+							throw new Error(text || '更新中にエラーが発生しました。');
+						});
 					}
-				}).catch(error => console.error('更新中にエラーが発生しました:', error));
+				}).catch(error => {
+					console.error('更新中にエラーが発生しました:', error);
+					alert(error.message);
+				});
+			});
+
+			// ユーザーのフィルタリング機能
+			function filterUsers() {
+				const searchValue = document.getElementById('searchUser').value.toLowerCase();
+				const roleFilter = document.getElementById('roleFilter').value;
+				const table = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+				const rows = table.getElementsByTagName('tr');
+				for (let i = 0; i < rows.length; i++) {
+					const userName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
+					const email = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+					const role = rows[i].getElementsByTagName('td')[2].innerText;
+					const matchesSearch = userName.includes(searchValue) || email.includes(searchValue);
+					const matchesRole = roleFilter === "すべての権限" || role === roleFilter;
+					if (matchesSearch && matchesRole) {
+						rows[i].style.display = "";
+					} else {
+						rows[i].style.display = "none";
+					}
+				}
+			}
+
+			// 検索ボタンのイベントリスナー
+			document.getElementById('searchButton').addEventListener('click', function () {
+				filterUsers();
+			});
+
+			// キーボードイベントリスナー、Enterキーで検索を実行
+			document.getElementById('searchUser').addEventListener('keypress', function (e) {
+				if (e.key === 'Enter') {
+					filterUsers();
+				}
 			});
 		</script>
 		<script>
