@@ -332,7 +332,9 @@
 													<td th:text="${user.usersPoints}">ポイント</td>
 													<td class="text-center">
 														<a href="#" class="btn btn-sm btn-primary"
-															data-bs-toggle="modal" data-bs-target="#editModal">編集</a>
+															data-bs-toggle="modal" data-bs-target="#editModal"
+															onclick="populateEditModal('${user.usersName}', '${user.usersMail}', '${user.usersRoles}', '${user.usersPoints}', '${user.usersId}', '${user.usersPostalCode}', '${user.usersAddress}')">
+															編集</a>
 														<a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
 															data-bs-target="#deleteModal"
 															th:attr="onclick='confirmDelete(' + ${user.usersId} + ')'">削除</a>
@@ -373,32 +375,30 @@
 															<label for="editUserName" class="form-label text-primary"
 																style="font-size: 13px;">ユーザ名</label>
 															<input type="text" class="form-control" id="editUserName"
-																style="font-size: 13px;" value="佐藤花子">
+																style="font-size: 13px;">
 														</div>
 														<div class="mb-3">
 															<label for="editUserEmail" class="form-label text-primary"
 																style="font-size: 13px;">メールアドレス</label>
 															<input type="email" class="form-control" id="editUserEmail"
-																style="font-size: 13px;"
-																value="hanako.sato@example.com">
+																style="font-size: 13px;">
 														</div>
 														<div class="mb-3">
 															<label for="editUserType" class="form-label text-primary"
 																style="font-size: 13px;">会員種類</label>
 															<select class="form-select" style="font-size: 13px;"
 																id="editUserType">
-																<option value="会員" selected>会員</option>
+																<option value="ゲスト">ゲスト</option>
+																<option value="会員">会員</option>
 																<option value="非会員">非会員</option>
 															</select>
 														</div>
-														<!-- クーポンフィールド -->
 														<div class="mb-3">
 															<label for="editUserCoupon" class="form-label text-primary"
 																style="font-size: 13px;">利用可能のポイント</label>
 															<input type="text" class="form-control" id="editUserCoupon"
-																style="font-size: 13px;" value="1000">
+																style="font-size: 13px;">
 														</div>
-														<!-- 郵便番号フィールド -->
 														<div class="mb-3">
 															<label for="editUserPostalCode"
 																class="form-label text-primary"
@@ -413,12 +413,11 @@
 																	onclick="searchAddress()">検索</button>
 															</div>
 														</div>
-														<!-- 住所フィールド -->
 														<div class="mb-3">
 															<label for="editUserAddress" class="form-label text-primary"
 																style="font-size: 13px;">住所</label>
 															<input type="text" class="form-control" id="editUserAddress"
-																style="font-size: 13px;" value="東京都新宿区西新宿1-1-1">
+																style="font-size: 13px;">
 														</div>
 														<div class="modal-footer justify-content-center"
 															style="border: none;">
@@ -427,7 +426,6 @@
 															<button type="button" class="btn btn-secondary btn-sm"
 																data-bs-dismiss="modal">閉じる</button>
 														</div>
-													</form>
 												</div>
 											</div>
 										</div>
@@ -633,6 +631,60 @@
 				if (e.key === 'Enter') {
 					filterUsers();
 				}
+			});
+		</script>
+		<script>
+			window.onload = function () {
+				document.getElementById('searchButton').addEventListener('click', function () {
+					filterUsers();
+				});
+				document.getElementById('searchUser').addEventListener('keypress', function (e) {
+					if (e.key === 'Enter') {
+						filterUsers();
+					}
+				});
+			};
+
+			//編集するとき、ユーザ内容が自動モーダルに表示されること
+			function populateEditModal(name, email, role, points, postalCode, address) {
+				console.log("ユーザ情報:", name, email, role, points, postalCode, address);
+				document.getElementById('editUserName').value = name;
+				document.getElementById('editUserEmail').value = email;
+				document.getElementById('editUserType').value = role;
+				document.getElementById('editUserCoupon').value = points;
+				document.getElementById('editUserPostalCode').value = postalCode;
+				document.getElementById('editUserAddress').value = address;
+			}
+		</script>
+		<script>
+			//編集した内容がバックエンドに送信すること
+			document.getElementById('editUserForm').addEventListener('submit', function (e) {
+				e.preventDefault();
+				// フォームをバックエンドに送信するために、fetch などの方法を使用することができます
+				let formData = {
+					name: document.getElementById('editUserName').value,
+					email: document.getElementById('editUserEmail').value,
+					role: document.getElementById('editUserType').value,
+					points: document.getElementById('editUserCoupon').value,
+					postalCode: document.getElementById('editUserPostalCode').value,
+					address: document.getElementById('editUserAddress').value
+				};
+
+				// 更新処理を実行します。例えば、fetch API を使用してサーバーに POST リクエストを送信します
+				fetch('/updateUser', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(formData),
+				}).then(response => {
+					if (response.ok) {
+						alert('ユーザ情報が更新されました。');
+						// 更新後、ページをリロードするか、テーブルを再読み込みします
+					} else {
+						alert('更新中にエラーが発生しました。');
+					}
+				}).catch(error => console.error('更新中にエラーが発生しました:', error));
 			});
 		</script>
 		<script>
