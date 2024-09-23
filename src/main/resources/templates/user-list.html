@@ -333,8 +333,15 @@
 													<td class="text-center">
 														<a href="#" class="btn btn-sm btn-primary"
 															data-bs-toggle="modal" data-bs-target="#editModal"
-															onclick="populateEditModal('${user.usersName}', '${user.usersMail}', '${user.usersRoles}', '${user.usersPoints}', '${user.usersId}', '${user.usersPostalCode}', '${user.usersAddress}')">
-															編集</a>
+															data-name="${user.usersName}" data-email="${user.usersMail}"
+															data-role="${user.usersRoles}"
+															data-points="${user.usersPoints}"
+															data-postalcode="${user.usersPostalCode}"
+															data-address="${user.usersAddress}"
+															onclick="populateEditModal(this)">
+															編集
+														</a>
+
 														<a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
 															data-bs-target="#deleteModal"
 															th:attr="onclick='confirmDelete(' + ${user.usersId} + ')'">削除</a>
@@ -646,8 +653,16 @@
 			};
 
 			//編集するとき、ユーザ内容が自動モーダルに表示されること
-			function populateEditModal(name, email, role, points, postalCode, address) {
+			function populateEditModal(element) {
+				const name = element.getAttribute('data-name');
+				const email = element.getAttribute('data-email');
+				const role = element.getAttribute('data-role');
+				const points = element.getAttribute('data-points');
+				const postalCode = element.getAttribute('data-postalcode');
+				const address = element.getAttribute('data-address');
+
 				console.log("ユーザ情報:", name, email, role, points, postalCode, address);
+
 				document.getElementById('editUserName').value = name;
 				document.getElementById('editUserEmail').value = email;
 				document.getElementById('editUserType').value = role;
