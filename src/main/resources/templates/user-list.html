@@ -272,7 +272,7 @@
 										</div>
 										<div class="col-md-3">
 											<select class="form-select custom-font-select" id="roleFilter">
-												<option value="すべての役割">すべての役割</option>
+												<option value="すべての権限">すべての役割</option>
 												<option value="ゲスト">ゲスト</option>
 												<option value="会員">会員</option>
 												<option value="非会員">非会員</option>
@@ -307,13 +307,13 @@
 														メールアドレス</th>
 													<th scope="col"
 														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
-														会員種類</th>
+														会員権限</th>
 													<th scope="col"
 														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
 														登録日時</th>
 													<th scope="col"
 														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
-														可用ポイント</th> <!-- 新增列 -->
+														可用ポイント</th>
 													<th scope="col" class="text-center"
 														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
 														操作</th>
@@ -325,7 +325,7 @@
 														style="font-weight:300; padding-left: 20px; width: 7%;"></th>
 													<td th:text="${user.usersName}">ユーザ名</td>
 													<td th:text="${user.usersMail}">メールアドレス</td>
-													<td th:text="${user.usersRoles}">会員種類</td>
+													<td th:text="${user.usersRoles}">会員権限</td>
 													<td
 														th:text="${#dates.format(user.createdAtTime, 'yyyy/MM/dd HH:mm:ss')}">
 														登録日時</td>
@@ -341,7 +341,6 @@
 															onclick="populateEditModal(this)">
 															編集
 														</a>
-
 														<a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
 															data-bs-target="#deleteModal"
 															th:attr="onclick='confirmDelete(' + ${user.usersId} + ')'">削除</a>
@@ -392,7 +391,7 @@
 														</div>
 														<div class="mb-3">
 															<label for="editUserType" class="form-label text-primary"
-																style="font-size: 13px;">会員種類</label>
+																style="font-size: 13px;">会員権限</label>
 															<select class="form-select" style="font-size: 13px;"
 																id="editUserType">
 																<option value="ゲスト">ゲスト</option>
@@ -625,7 +624,7 @@
 					const email = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
 					const role = rows[i].getElementsByTagName('td')[2].innerText;
 					const matchesSearch = userName.includes(searchValue) || email.includes(searchValue);
-					const matchesRole = roleFilter === "すべての役割" || role === roleFilter;
+					const matchesRole = roleFilter === "すべての権限" || role === roleFilter;
 					if (matchesSearch && matchesRole) {
 						rows[i].style.display = "";
 					} else {
