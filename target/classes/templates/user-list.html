@@ -330,25 +330,30 @@
 														th:text="${#dates.format(user.createdAtTime, 'yyyy/MM/dd HH:mm:ss')}">
 														登録日時</td>
 													<td th:text="${user.usersPoints}">ポイント</td>
+													<!-- 操作列 -->
 													<td class="text-center">
+														<!-- 編集ボタン -->
+														<!-- テンプレートエンジンが式を正しく解析するためには、th:attrなどのテンプレートエンジン固有の属性を使用する -->
 														<a href="#" class="btn btn-sm btn-primary"
 															data-bs-toggle="modal" data-bs-target="#editModal"
-															data-name="${user.usersName}" data-email="${user.usersMail}"
-															data-role="${user.usersRoles}"
-															data-points="${user.usersPoints}"
-															data-postalcode="${user.usersPostalCode}"
-															data-address="${user.usersAddress}"
-															onclick="populateEditModal(this)">
+															th:attr="data-userid=${user.usersId}" onclick="fetchUserInfo(this)">
 															編集
 														</a>
+														<!-- 削除ボタン -->
 														<a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
 															data-bs-target="#deleteModal"
-															th:attr="onclick='confirmDelete(' + ${user.usersId} + ')'">削除</a>
+															th:attr="onclick='confirmDelete(' + ${user.usersId} + ')'">
+															削除
+														</a>
+														<!-- 注文履歴ボタン -->
 														<a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal"
-															data-bs-target="#orderHistoryModal">注文履歴</a>
+															data-bs-target="#orderHistoryModal">
+															注文履歴
+														</a>
 													</td>
 												</tr>
 											</tbody>
+
 										</table>
 									</div>
 									<!-- ページング -->
@@ -377,54 +382,63 @@
 												</div>
 												<div class="modal-body">
 													<form id="editUserForm">
+														<!-- ユーザ名 -->
 														<div class="mb-3">
 															<label for="editUserName" class="form-label text-primary"
 																style="font-size: 13px;">ユーザ名</label>
 															<input type="text" class="form-control" id="editUserName"
-																style="font-size: 13px;">
+																name="name" style="font-size: 13px;">
 														</div>
+														<!-- メールアドレス -->
 														<div class="mb-3">
 															<label for="editUserEmail" class="form-label text-primary"
 																style="font-size: 13px;">メールアドレス</label>
 															<input type="email" class="form-control" id="editUserEmail"
-																style="font-size: 13px;">
+																name="email" style="font-size: 13px;">
 														</div>
+														<!-- 会員権限 -->
 														<div class="mb-3">
-															<label for="editUserType" class="form-label text-primary"
+															<label for="editUserRoles" class="form-label text-primary"
 																style="font-size: 13px;">会員権限</label>
-															<select class="form-select" style="font-size: 13px;"
-																id="editUserType">
+															<select class="form-select" id="editUserRoles" name="role"
+																style="font-size: 13px;">
 																<option value="ゲスト">ゲスト</option>
 																<option value="会員">会員</option>
 																<option value="非会員">非会員</option>
 															</select>
 														</div>
+														<!-- 利用可能のポイント -->
 														<div class="mb-3">
-															<label for="editUserCoupon" class="form-label text-primary"
+															<label for="editUserPoints" class="form-label text-primary"
 																style="font-size: 13px;">利用可能のポイント</label>
-															<input type="text" class="form-control" id="editUserCoupon"
-																style="font-size: 13px;">
+															<input type="text" class="form-control" id="editUserPoints"
+																name="points" style="font-size: 13px;">
 														</div>
+														<!-- 郵便番号 -->
 														<div class="mb-3">
-															<label for="editUserPostalCode"
+															<label for="editUserPostCode"
 																class="form-label text-primary"
 																style="font-size: 13px;">郵便番号</label>
 															<div class="input-group">
 																<input type="text" class="form-control"
-																	id="editUserPostalCode" style="font-size: 13px;"
-																	placeholder="123-4567">
+																	id="editUserPostCode" name="postCode"
+																	style="font-size: 13px;" placeholder="123-4567">
 																<button type="button"
 																	class="btn btn-outline-primary btn-sm"
 																	style="font-size: 13px;"
 																	onclick="searchAddress()">検索</button>
 															</div>
 														</div>
+														<!-- 住所 -->
 														<div class="mb-3">
-															<label for="editUserAddress" class="form-label text-primary"
+															<label for="editUserAddress1"
+																class="form-label text-primary"
 																style="font-size: 13px;">住所</label>
-															<input type="text" class="form-control" id="editUserAddress"
+															<input type="text" class="form-control"
+																id="editUserAddress1" name="address"
 																style="font-size: 13px;">
 														</div>
+														<!-- フッターのボタン -->
 														<div class="modal-footer justify-content-center"
 															style="border: none;">
 															<button type="submit"
@@ -432,6 +446,7 @@
 															<button type="button" class="btn btn-secondary btn-sm"
 																data-bs-dismiss="modal">閉じる</button>
 														</div>
+													</form>
 												</div>
 											</div>
 										</div>
@@ -611,9 +626,7 @@
 		<script th:src="@{/assets/js/sb-admin-2.min.js}"></script>
 
 		<script>
-			document.getElementById('searchButton').addEventListener('click', function () {
-				filterUsers();
-			});
+			// ユーザーのフィルタリング機能
 			function filterUsers() {
 				const searchValue = document.getElementById('searchUser').value.toLowerCase();
 				const roleFilter = document.getElementById('roleFilter').value;
@@ -633,43 +646,80 @@
 				}
 			}
 
+			// 検索ボタンのイベントリスナー
+			document.getElementById('searchButton').addEventListener('click', function () {
+				filterUsers();
+			});
+
+			// キーボードイベントリスナー、Enterキーで検索を実行
 			document.getElementById('searchUser').addEventListener('keypress', function (e) {
 				if (e.key === 'Enter') {
 					filterUsers();
 				}
 			});
-		</script>
-		<script>
+
 			window.onload = function () {
-				document.getElementById('searchButton').addEventListener('click', function () {
-					filterUsers();
-				});
-				document.getElementById('searchUser').addEventListener('keypress', function (e) {
-					if (e.key === 'Enter') {
-						filterUsers();
-					}
+				// ユーザー情報フォームの送信イベントリスナー
+				document.getElementById('editUserForm').addEventListener('submit', function (e) {
+					e.preventDefault();  // フォームのデフォルト送信動作をキャンセル
+
+					// 送信するユーザーデータを作成
+					const updatedUserData = {
+						name: document.getElementById('editUserName').value || "",  // フィールドにデフォルト値を設定
+						email: document.getElementById('editUserEmail').value || "",
+						role: document.getElementById('editUserRoles').value || "",
+						points: document.getElementById('editUserPoints').value || 0,
+						postalCode: document.getElementById('editUserPostCode').value || "",
+						address: document.getElementById('editUserAddress1').value || ""
+					};
+
+					// 更新リクエストを送信
+					fetch(`/updateUser`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(updatedUserData),
+					}).then(response => {
+						if (response.ok) {
+							alert('ユーザ情報が更新されました。');  // 更新成功のアラートを表示
+						} else {
+							alert('更新中にエラーが発生しました。');  // エラーメッセージを表示
+						}
+					}).catch(error => console.error('更新中にエラーが発生しました:', error));
 				});
 			};
 
-			//編集するとき、ユーザ内容が自動モーダルに表示されること
-			function populateEditModal(element) {
-				const name = element.getAttribute('data-name');
-				const email = element.getAttribute('data-email');
-				const role = element.getAttribute('data-role');
-				const points = element.getAttribute('data-points');
-				const postalCode = element.getAttribute('data-postalcode');
-				const address = element.getAttribute('data-address');
+			// ユーザー情報を取得し、モーダルに表示する関数
+			function fetchUserInfo(element) {
+				const userId = element.getAttribute('data-userid');  // ユーザーIDを取得
+				console.log("取得したユーザーID:", userId);
+				
+				fetch(`/getUserInfo?userId=${userId}`)
+					.then(response => response.json())
+					.then(data => {
+						console.log("取得したユーザーデータ:", data);
+						if (data) {
+							// モーダルにデータを入力
+							document.getElementById('editUserName').value = data.usersName || "";
+							document.getElementById('editUserEmail').value = data.usersMail || "";
+							document.getElementById('editUserRoles').value = data.usersRoles || "";
+							document.getElementById('editUserPoints').value = data.usersPoints || 0;
+							document.getElementById('editUserPostCode').value = data.postCode || "";
+							document.getElementById('editUserAddress1').value = data.usersAddress1 || "";
 
-				console.log("ユーザ情報:", name, email, role, points, postalCode, address);
-
-				document.getElementById('editUserName').value = name;
-				document.getElementById('editUserEmail').value = email;
-				document.getElementById('editUserType').value = role;
-				document.getElementById('editUserCoupon').value = points;
-				document.getElementById('editUserPostalCode').value = postalCode;
-				document.getElementById('editUserAddress').value = address;
+							// モーダルを表示
+							$('#editModal').modal('show');
+						} else {
+							console.error("データが受信されませんでした");
+						}
+					})
+					.catch(error => {
+						console.error('ユーザ情報の取得中にエラーが発生しました:', error);
+					});
 			}
 		</script>
+
 		<script>
 			//編集した内容がバックエンドに送信すること
 			document.getElementById('editUserForm').addEventListener('submit', function (e) {
@@ -678,10 +728,10 @@
 				let formData = {
 					name: document.getElementById('editUserName').value,
 					email: document.getElementById('editUserEmail').value,
-					role: document.getElementById('editUserType').value,
-					points: document.getElementById('editUserCoupon').value,
-					postalCode: document.getElementById('editUserPostalCode').value,
-					address: document.getElementById('editUserAddress').value
+					role: document.getElementById('editUserRoles').value,
+					points: document.getElementById('editUserPoints').value,
+					postalCode: document.getElementById('editUserPostCode').value,
+					address: document.getElementById('editUserAddress1').value
 				};
 
 				// 更新処理を実行します。例えば、fetch API を使用してサーバーに POST リクエストを送信します
@@ -735,12 +785,12 @@
 		<script>
 			// 郵便番号で住所を検索する関数
 			function searchAddress() {
-				const postalCode = document.getElementById('editUserPostalCode').value.replace('-', '').trim(); // ハイフンを削除し、余分な空白も削除
+				const postalCode = document.getElementById('editUserPostCode').value.replace('-', '').trim(); // ハイフンを削除し、余分な空白も削除
 				if (postalCode === "") {
-					document.getElementById('editUserAddress').value = "郵便番号を入力してください";
+					document.getElementById('editUserAddress1').value = "郵便番号を入力してください";
 					return;
 				}
-				const apiUrl = `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postalCode}`;
+				const apiUrl = `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postCode}`;
 				fetch(apiUrl)
 					.then(response => response.json())
 					.then(data => {

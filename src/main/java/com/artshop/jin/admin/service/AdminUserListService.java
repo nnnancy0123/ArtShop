@@ -40,4 +40,29 @@ public class AdminUserListService {
 
 	}
 
+	//ユーザIDを元に、情報を取得する
+	public AdminUserListObject getUserInfoById(Long usersId) {
+		//NullPointerExceptionを防ぐするため(orElse)
+		AdminUserListEntity userInfo = adminUserListRepository.findById(usersId).orElse(null);
+		;
+		if (userInfo != null) {
+			return new AdminUserListObject(
+					userInfo.getUsersId(),
+					userInfo.getUsersName(),
+					userInfo.getUsersMail(),
+					userInfo.getUsersRoles(),
+					userInfo.getUsersStatus(),
+					userInfo.getCreatedAtTime(),
+					userInfo.getUpdatedAtTime(),
+					userInfo.getPostCode(),
+					userInfo.getUsersAddress1(),
+					userInfo.getUsersAddress2(),
+					userInfo.getUsersAddress3(),
+					userInfo.getUsersPoints());
+		} else {
+			return null;
+		}
+
+	}
+
 }

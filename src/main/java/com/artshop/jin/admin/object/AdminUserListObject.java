@@ -2,42 +2,74 @@ package com.artshop.jin.admin.object;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 public class AdminUserListObject {
+
 	@Id
+	@JsonProperty("usersId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	//ユーザD
 	private Long usersId;
+	
 	//ユーザ名
+	@JsonProperty("usersName")
 	private String usersName;
+	
 	// ユーザメールアドレス
+	@JsonProperty("usersMail")
 	private String usersMail;
+	
 	// ユーザ権限
+	@JsonProperty("usersRoles")
 	private int usersRoles;
+	
 	// ユーザステータス
+	@JsonProperty("usersStatus")
 	private short usersStatus;
+	
     // 作成時間
+	@JsonProperty("createdAtTime")
 	private Timestamp createdAtTime;
+	
     // 更新時間
+	@JsonProperty("updatedAtTime")
 	private Timestamp updatedAtTime;
+	
     // 郵便番号
+	@JsonProperty("postCode")
 	private String postCode;
+	
     //支払いカード1
+	@JsonProperty("payCard1")
 	private String payCard1;
+	
     //支払いカード2
+	@JsonProperty("payCard2")
 	private String payCard2;
+	
     //支払いカード3
+	@JsonProperty("payCard3")
 	private String payCard3;
+	
     //住所１
+	@JsonProperty("usersAddress1")
 	private String usersAddress1;
+	
     //住所2
+	@JsonProperty("usersAddress2")
 	private String usersAddress2;
+	
     //住所3
+	@JsonProperty("usersAddress3")
 	private String usersAddress3;
+	
 	//ポイント
+	@JsonProperty("usersPoints")
 	private int usersPoints;
 
 	public AdminUserListObject(Long usersId, String usersName, String usersMail, int usersRoles, short usersStatus,
