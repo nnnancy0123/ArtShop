@@ -15,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.artshop.jin.admin.object.AdminUserListObject;
 import com.artshop.jin.admin.service.AdminUserListService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 public class AdminUserListController {
 	@Autowired
@@ -57,7 +59,8 @@ public class AdminUserListController {
 				user.getPostCode(),
 				user.getUsersAddress1(),
 				user.getUsersAddress2(),
-				user.getUsersAddress3());
+				user.getUsersAddress3(),
+				user.getDelFlag());
 		;
 		if (updateUserInfo != null) {
 			//成功する時、HTTPステータスコード200を設定する
@@ -68,4 +71,13 @@ public class AdminUserListController {
 		}
 	}
 
+	@PostMapping("/delUserInfo")
+	public ResponseEntity<String> delUserInfo(@RequestParam("userId") Long userId) {
+		try {
+			adminUserListService.delUserInfo(userId);
+			return ResponseEntity.ok("ユーザーが削除されました。");
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
 }

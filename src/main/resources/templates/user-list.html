@@ -320,7 +320,8 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr th:each="user : ${adminUserInfoList}" style="font-size:small;">
+												<tr th:each="user : ${adminUserInfoList}"
+													th:id="'userRow_' + ${user.usersId}" style="font-size:small;">
 													<th scope="row" th:text="${user.usersId}"
 														style="font-weight:300; padding-left: 20px; width: 7%;"></th>
 													<td th:text="${user.usersName}">ユーザ名</td>
@@ -865,20 +866,44 @@
 
 		<script>
 			let userToDelete = ''; // 削除するユーザIDを保持する変数
+
 			// 削除するユーザを確認する関数
 			function confirmDelete(userId) {
 				userToDelete = userId; // 削除するユーザIDを保持
 			}
+
+			// ユーザを削除する関数
 			function deleteUser() {
 				if (userToDelete) {
-					let userRow = document.getElementById(userToDelete); // 削除するユーザの行を取得
-					if (userRow) {
-						userRow.remove(); // ユーザ行を削除
-					}
-					// jQueryを使用してモーダルを閉じる
-					$('#deleteModal').modal('hide'); // モーダルを閉じる
-					// 変数をリセット
-					userToDelete = '';
+					// サーバーに削除リクエストを送信
+					fetch('/delUserInfo', {
+						method: 'POST', // コントローラーが POST を受け付ける場合
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+						},
+						body: 'userId=' + encodeURIComponent(userToDelete)
+					})
+						.then(response => {
+							if (response.ok) {
+								// ユーザ行を削除
+								let userRow = document.getElementById('userRow_' + userToDelete);
+								if (userRow) {
+									userRow.remove();
+								}
+								// モーダルを閉じる
+								$('#deleteModal').modal('hide');
+								// 変数をリセット
+								userToDelete = '';
+								alert('ユーザーが削除されました。');
+							} else {
+								return response.text().then(text => {
+									throw new Error(text || '削除に失敗しました。');
+								});
+							}
+						})
+						.catch(error => {
+							alert('ユーザーの削除中にエラーが発生しました：' + error.message);
+						});
 				}
 			}
 		</script>

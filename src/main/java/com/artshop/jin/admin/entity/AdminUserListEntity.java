@@ -1,6 +1,7 @@
 package com.artshop.jin.admin.entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class AdminUserListEntity {
 	// 作成時間
 	private Timestamp createdAtTime;
 	// 更新時間
-	private Timestamp updatedAtTime;
+	private LocalDateTime updatedAtTime;
 	// 郵便番号
 	private String postCode;
 	//支払いカード1
@@ -48,6 +49,8 @@ public class AdminUserListEntity {
 	private String usersAddress3;
 	// ポイント
 	private int usersPoints;
+	//削除フラグ
+	private int delFlag;
 
 	public Long getUsersId() {
 		return usersId;
@@ -97,11 +100,11 @@ public class AdminUserListEntity {
 		this.createdAtTime = createdAtTime;
 	}
 
-	public Timestamp getUpdatedAtTime() {
+	public LocalDateTime getUpdatedAtTime() {
 		return updatedAtTime;
 	}
 
-	public void setUpdatedAtTime(Timestamp updatedAtTime) {
+	public void setUpdatedAtTime(LocalDateTime updatedAtTime) {
 		this.updatedAtTime = updatedAtTime;
 	}
 
@@ -167,6 +170,14 @@ public class AdminUserListEntity {
 
 	public void setUsersPoints(int usersPoints) {
 		this.usersPoints = usersPoints;
+	}
+	
+	public int getDelFlag() {
+		return delFlag;
+	}
+	
+	public void setDelFlag(int delFlag) {
+		this.delFlag = delFlag;
 	}
 
 }

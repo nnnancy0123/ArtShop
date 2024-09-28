@@ -1,6 +1,7 @@
 package com.artshop.jin.admin.object;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,7 +39,7 @@ public class AdminUserListObject {
 	
     // 更新時間
 	@JsonProperty("updatedAtTime")
-	private Timestamp updatedAtTime;
+	private LocalDateTime updatedAtTime;
 	
     // 郵便番号
 	@JsonProperty("postCode")
@@ -71,10 +72,14 @@ public class AdminUserListObject {
 	//ポイント
 	@JsonProperty("usersPoints")
 	private int usersPoints;
+	
+	//削除フラグ
+	@JsonProperty("delFlag")
+	private int delFlag;
 
 	public AdminUserListObject(Long usersId, String usersName, String usersMail, int usersRoles, short usersStatus,
-			Timestamp createdAtTime, Timestamp updatedAtTime, String postCode,
-			String usersAddress1, String usersAddress2, String usersAddress3, int usersPoints) {
+			Timestamp createdAtTime, LocalDateTime updatedAtTime, String postCode,
+			String usersAddress1, String usersAddress2, String usersAddress3, int usersPoints, int delFlag) {
 		this.usersId = usersId;
 		this.usersName = usersName;
 		this.usersMail = usersMail;
@@ -87,6 +92,7 @@ public class AdminUserListObject {
 		this.usersAddress2 = usersAddress2;
 		this.usersAddress3 = usersAddress3;
 		this.usersPoints = usersPoints;
+		this.delFlag = delFlag;
 	}
 
 	// Getter 和 Setter 方法
@@ -138,11 +144,11 @@ public class AdminUserListObject {
 		this.createdAtTime = createdAtTime;
 	}
 
-	public Timestamp getUpdatedAtTime() {
+	public LocalDateTime getUpdatedAtTime() {
 		return updatedAtTime;
 	}
 
-	public void setUpdatedAtTime(Timestamp updatedAtTime) {
+	public void setUpdatedAtTime(LocalDateTime updatedAtTime) {
 		this.updatedAtTime = updatedAtTime;
 	}
 
@@ -208,5 +214,13 @@ public class AdminUserListObject {
 
 	public void setUsersPoints(int usersPoints) {
 		this.usersPoints = usersPoints;
+	}
+	
+	public int getDelFlag() {
+		return delFlag;
+	}
+	
+	public void setDelFlag(int delFlag) {
+		this.delFlag = delFlag;
 	}
 }

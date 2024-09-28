@@ -1,7 +1,8 @@
 package com.artshop.jin.admin.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import com.artshop.jin.admin.entity.AdminUserListEntity;
 import com.artshop.jin.admin.object.AdminUserListObject;
 import com.artshop.jin.admin.repository.AdminUserListRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class AdminUserListService {
 
@@ -21,7 +24,8 @@ public class AdminUserListService {
 	//ユーザ情報リストを取得する
 	@Transactional
 	public List<AdminUserListObject> getUserInfoList() {
-		List<AdminUserListEntity> userListEntityList = adminUserListRepository.findAll();
+		// delFlagが0のユーザーのみを取得
+		List<AdminUserListEntity> userListEntityList = adminUserListRepository.findByDelFlag(0);
 
 		return userListEntityList.stream()
 				.map(entity -> new AdminUserListObject(
@@ -36,7 +40,8 @@ public class AdminUserListService {
 						entity.getUsersAddress1(),
 						entity.getUsersAddress2(),
 						entity.getUsersAddress3(),
-						entity.getUsersPoints()))
+						entity.getUsersPoints(),
+						entity.getDelFlag()))
 				.collect(Collectors.toList());
 
 	}
@@ -44,7 +49,7 @@ public class AdminUserListService {
 	//ユーザIDを元に、情報を取得する
 	public AdminUserListObject getUserInfoById(Long usersId) {
 		//NullPointerExceptionを防ぐするため(orElse)
-		AdminUserListEntity userInfo = adminUserListRepository.findById(usersId).orElse(null);
+		AdminUserListEntity userInfo = adminUserListRepository.findByUsersIdAndDelFlag(usersId, 0).orElse(null);
 		;
 		if (userInfo != null) {
 			return new AdminUserListObject(
@@ -59,7 +64,8 @@ public class AdminUserListService {
 					userInfo.getUsersAddress1(),
 					userInfo.getUsersAddress2(),
 					userInfo.getUsersAddress3(),
-					userInfo.getUsersPoints());
+					userInfo.getUsersPoints(),
+					userInfo.getDelFlag());
 		} else {
 			return null;
 		}
@@ -68,11 +74,11 @@ public class AdminUserListService {
 
 	//ユーザ編集モーダル情報を更新して保存する
 	public AdminUserListObject saveUserinfoById(Long usersId, String name, String email, int role, int points,
-			String postCode, String address1, String address2, String address3) {
+			String postCode, String address1, String address2, String address3, int deFlag) {
 
 		//既存のユーザIDから該当のユーザ情報を取得
-		AdminUserListEntity existingEntity = adminUserListRepository.findById(usersId).orElse(null);
-		
+		AdminUserListEntity existingEntity = adminUserListRepository.findByUsersIdAndDelFlag(usersId, 0).orElse(null);
+
 		if (existingEntity != null) {
 			existingEntity.setUsersName(name);
 			existingEntity.setUsersMail(email);
@@ -82,7 +88,7 @@ public class AdminUserListService {
 			existingEntity.setUsersAddress1(address1);
 			existingEntity.setUsersAddress2(address2);
 			existingEntity.setUsersAddress3(address3);
-			existingEntity.setUpdatedAtTime(new Timestamp(System.currentTimeMillis()));
+			existingEntity.setUpdatedAtTime(LocalDateTime.now());
 
 			//取得した該当のユーザ情報をエンティティに保存する
 			AdminUserListEntity saveUserInfoById = adminUserListRepository.save(existingEntity);
@@ -100,11 +106,49 @@ public class AdminUserListService {
 					saveUserInfoById.getUsersAddress1(),
 					saveUserInfoById.getUsersAddress2(),
 					saveUserInfoById.getUsersAddress3(),
-					saveUserInfoById.getUsersPoints());
+					saveUserInfoById.getUsersPoints(),
+					saveUserInfoById.getDelFlag());
 		} else {
 			return null;
 
 		}
+	}
+
+	//ユーザ情報を削除する
+	@Transactional
+	public AdminUserListObject delUserInfo(Long usersId) {
+
+		//ユーザの情報を見つける
+		Optional<AdminUserListEntity> optionalUser = adminUserListRepository.findById(usersId);
+
+		//ユーザ存在することを判断する
+		if (optionalUser.isPresent()) {
+			AdminUserListEntity userDel = optionalUser.get();
+			//削除フラグを１にセットする
+			userDel.setDelFlag(1);
+			// 更新日時を設定
+			userDel.setUpdatedAtTime(LocalDateTime.now());
+			//更新した情報を返す
+			adminUserListRepository.save(userDel);
+			return new AdminUserListObject(
+					userDel.getUsersId(),
+					userDel.getUsersName(),
+					userDel.getUsersMail(),
+					userDel.getUsersRoles(),
+					userDel.getUsersStatus(),
+					userDel.getCreatedAtTime(),
+					userDel.getUpdatedAtTime(),
+					userDel.getPostCode(),
+					userDel.getUsersAddress1(),
+					userDel.getUsersAddress2(),
+					userDel.getUsersAddress3(),
+					userDel.getUsersPoints(),
+					userDel.getDelFlag());
+		} else {
+			// ユーザ存在しない場合
+			throw new EntityNotFoundException("こちらのユーザーが見つかりません。");
+		}
+
 	}
 
 }
