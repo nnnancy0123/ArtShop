@@ -43,7 +43,6 @@ public class AdminUserListService {
 						entity.getUsersPoints(),
 						entity.getDelFlag()))
 				.collect(Collectors.toList());
-
 	}
 
 	//ユーザIDを元に、情報を取得する
