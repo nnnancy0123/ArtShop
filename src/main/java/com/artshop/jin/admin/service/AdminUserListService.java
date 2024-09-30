@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.artshop.jin.admin.entity.AdminUserListEntity;
 import com.artshop.jin.admin.object.AdminUserListObject;
 import com.artshop.jin.admin.repository.AdminUserListRepository;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class AdminUserListService {
@@ -78,7 +78,9 @@ public class AdminUserListService {
 		//既存のユーザIDから該当のユーザ情報を取得
 		AdminUserListEntity existingEntity = adminUserListRepository.findByUsersIdAndDelFlag(usersId, 0).orElse(null);
 
-		if (existingEntity != null) {
+		boolean res = adminUserListRepository.existsById(usersId);
+		
+		if (!res) {
 			existingEntity.setUsersName(name);
 			existingEntity.setUsersMail(email);
 			existingEntity.setUsersRoles(role);
