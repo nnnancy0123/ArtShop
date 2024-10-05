@@ -22,7 +22,6 @@ import com.artshop.jin.admin.service.AdminUserListService;
  * @author Nancy
  * @sinces  2024-09-30
  */
-
 @RestController
 public class AdminUserListController {
 	@Autowired
@@ -30,7 +29,7 @@ public class AdminUserListController {
 
 	/**
 	 * ユーザー管理リストが画面表示される
-	 * @return
+	 * @return mav
 	 */
 	@GetMapping("/adminuserlist")
 	public ModelAndView adminUserList() {
@@ -51,6 +50,7 @@ public class AdminUserListController {
 	@GetMapping("/getUserInfo")
 	public ResponseEntity<AdminUserListObject> getUserInfo(@RequestParam("userId") Long userId) {
 		AdminUserListObject userInfoById = adminUserListService.getUserInfoById(userId);
+		//ユーザーが存在することを確認
 		if (userInfoById != null) {
 			return ResponseEntity.ok(userInfoById);
 		} else {
@@ -60,7 +60,11 @@ public class AdminUserListController {
 
 	}
 
-	//ユーザーIDでユーザ情報を更新して保存する
+	/**
+	 * ユーザーIDでユーザ情報を更新して保存する
+	 * @param adminUserListObject
+	 * @return
+	 */
 	@PostMapping("/saveUserInfo")
 	public ResponseEntity<AdminUserListObject> saveUserInfoById(@RequestBody AdminUserListObject adminUserListObject) {
 
@@ -75,6 +79,7 @@ public class AdminUserListController {
 				adminUserListObject.getUsersAddress3(),
 				adminUserListObject.getDelFlag());
 
+		//ユーザー存在をチェックする
 		if (updateUserInfo != null) {
 			//成功する時、HTTPステータスコード200を設定する
 			return ResponseEntity.ok(updateUserInfo);
@@ -93,8 +98,10 @@ public class AdminUserListController {
 	public ResponseEntity<String> delUserInfo(@RequestParam("userId") Long userId) {
 		try {
 			adminUserListService.delUserInfo(userId);
+			//成功する時、削除メッセージを表示される
 			return ResponseEntity.ok("ユーザーが削除されました。");
 		} catch (EntityNotFoundException e) {
+			//エラー処理
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}

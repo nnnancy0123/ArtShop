@@ -10,6 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.artshop.jin.admin.object.AdminProductListObject;
 import com.artshop.jin.admin.service.AdminProductListService;
 
+/**
+ * 商品管理クラス
+ * @author Nancy
+ * @since 2024-09-30
+ */
 @Controller
 public class AdminProuductListController {
 	@Autowired
