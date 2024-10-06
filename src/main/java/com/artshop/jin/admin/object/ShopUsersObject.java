@@ -3,14 +3,19 @@ package com.artshop.jin.admin.object;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-public class AdminUserListObject {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class ShopUsersObject {
+
+	/**
+	 *ユーザー情報オブジェクト
+	 * @author Nancy
+	 * @since 2024-10-06
+	 */
 	@Id
 	@JsonProperty("usersId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,11 +80,11 @@ public class AdminUserListObject {
 	
 	//削除フラグ
 	@JsonProperty("delFlag")
-	private int delFlag;
+	private String delFlag;
 
-	public AdminUserListObject(Long usersId, String usersName, String usersMail, int usersRoles, short usersStatus,
+	public ShopUsersObject(Long usersId, String usersName, String usersMail, int usersRoles, short usersStatus,
 			Timestamp createdAtTime, LocalDateTime updatedAtTime, String postCode,
-			String usersAddress1, String usersAddress2, String usersAddress3, int usersPoints, int delFlag) {
+			String usersAddress1, String usersAddress2, String usersAddress3, int usersPoints, String delFlag) {
 		this.usersId = usersId;
 		this.usersName = usersName;
 		this.usersMail = usersMail;
@@ -216,11 +221,11 @@ public class AdminUserListObject {
 		this.usersPoints = usersPoints;
 	}
 	
-	public int getDelFlag() {
+	public String getDelFlag() {
 		return delFlag;
 	}
 	
-	public void setDelFlag(int delFlag) {
+	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
 	}
 }

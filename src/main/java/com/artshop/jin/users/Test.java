@@ -1,4 +1,4 @@
-package com.artshop.jin.controller;
+package com.artshop.jin.users;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package com.artshop.jin.controller;
+package com.artshop.jin.users.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

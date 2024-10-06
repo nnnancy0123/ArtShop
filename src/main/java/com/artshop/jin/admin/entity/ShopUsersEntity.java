@@ -12,11 +12,16 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *ユーザー情報エンティティ
+ * @author Nancy
+ * @since 2024-10-06
+ */
 @Getter
 @Setter
 @Entity
 @Table(name = "users")
-public class AdminUserListEntity {
+public class ShopUsersEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +56,6 @@ public class AdminUserListEntity {
 	// ポイント
 	private int usersPoints;
 	//削除フラグ
-	private int delFlag;
-
+	private String delFlag;
 
 }
