@@ -15,6 +15,7 @@ public class ShopUsersObject {
 	 *ユーザー情報オブジェクト
 	 * @author Nancy
 	 * @since 2024-10-06
+	 * @version 1.0
 	 */
 	@Id
 	@JsonProperty("usersId")

@@ -20,7 +20,10 @@ public class AdminProuductListController {
 	@Autowired
 	private AdminProductListService adminProductListService;
 
-	//商品情報が画面に表示される
+	/**
+	 * 商品情報が画面に表示される
+	 * @return mav
+	 */
 	@GetMapping("/productlist")
 	public ModelAndView poductList() {
 		ModelAndView mav = new ModelAndView("product-list");

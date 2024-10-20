@@ -13,7 +13,6 @@
 	<title>管理員 ｜ お問い合わせ一覧</title>
 
 	<!-- Custom fonts for this template-->
-	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 		rel="stylesheet">
@@ -193,7 +192,7 @@
 								</h6>
 								<a class="dropdown-item d-flex align-items-center" href="#">
 									<div class="dropdown-list-image mr-3">
-										<img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
+										<img class="rounded-circle" src="/assets/img/undraw_profile.svg" alt="...">
 										<div class="status-indicator bg-success"></div>
 									</div>
 									<div class="font-weight-bold">
@@ -203,7 +202,7 @@
 								</a>
 								<a class="dropdown-item d-flex align-items-center" href="#">
 									<div class="dropdown-list-image mr-3">
-										<img class="rounded-circle" src="/assets/img/undraw_profile_1.svg" alt="...">
+										<img class="rounded-circle" src="/assets/img/undraw_profile.svg" alt="...">
 										<div class="status-indicator"></div>
 									</div>
 									<div>
@@ -257,6 +256,10 @@
 				<div class="container-fluid">
 					<!-- Page Heading -->
 					<h1 class="h5 mb-2 text-gray-900" style="margin:20px 0px 0px 25px">ユーザ一覧</h1>
+					<div class="col-md-3">
+						<button class="btn btn-success w-90 btn-sm" style="margin:15px 0px 0px 15px"
+							onclick="insertUserInfo()">新規ユーザ</button>
+					</div>
 					<div class="col-lg-12 justify-content-between align-items-center">
 						<div class="ps-lg-3 ps-xl-0">
 							<!-- User Inquiry Table -->
@@ -272,10 +275,10 @@
 										</div>
 										<div class="col-md-3">
 											<select class="form-select custom-font-select" id="roleFilter">
-												<option value="すべての権限">すべての役割</option>
-												<option value="0">ゲスト</option>
-												<option value="1">会員</option>
-												<option value="2">非会員</option>
+												<option value="すべての役割">すべての役割</option>
+												<option value="ゲスト">ゲスト</option>
+												<option value="会員">会員</option>
+												<option value="非会員">非会員</option>
 											</select>
 											<style>
 												.custom-font-select {
@@ -314,25 +317,35 @@
 													<th scope="col"
 														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
 														可用ポイント</th>
+													<th scope="col"
+														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
+														表示／非表示</th>
 													<th scope="col" class="text-center"
 														style="font-weight: 300; padding-left: 10px; font-size: 14px;">
 														操作</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr th:each="user : ${adminUserInfo}"
+												<tr th:each="user : ${shopUserInfo}"
 													th:id="'userRow_' + ${user.usersId}" style="font-size:small;">
 													<th scope="row" th:text="${user.usersId}"
 														style="font-weight:300; padding-left: 20px; width: 7%;"></th>
 													<td th:text="${user.usersName}">ユーザ名</td>
 													<td th:text="${user.usersMail}">メールアドレス</td>
-													<td th:text="${user.usersRoles}">会員権限</td>
+													<td> <span th:switch="${user.usersRoles}">
+															<span th:case="0">ゲスト</span>
+															<span th:case="1">会員</span>
+															<span th:case="2">非会員</span>
+													</td>
 													<td
 														th:text="${#dates.format(user.createdAtTime, 'yyyy/MM/dd HH:mm:ss')}">
 														登録日時</td>
 													<td th:text="${user.usersPoints}">ポイント</td>
-													<td th:text="${user.delFlag}">削除フラグ</td>
-                                                        <td class="text t-center">
+													<td> <span th:switch="${user.delFlag}">
+															<span th:case="1">非表示</span>
+															<span th:case="0">表示</span>
+														</span></td>
+													<td class="text t-center">
 														<!-- 編集ボタン -->
 														<!-- テンプレートエンジンが式を正しく解析するためには、th:attrなどのテンプレートエンジン固有の属性を使用する -->
 														<a href="#" class="btn btn-sm btn-primary"
@@ -355,7 +368,6 @@
 													</td>
 												</tr>
 											</tbody>
-
 										</table>
 									</div>
 									<!-- ページング -->
@@ -372,6 +384,117 @@
 											</li>
 										</ul>
 									</nav>
+									<!-- 新規ユーザモーダル -->
+									<div class="modal fade" id="newUserModal" tabindex="-1"
+										aria-labelledby="newUserModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered modal-lg"
+											style="margin-right:370px;">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="newUserModalLabel">新規ユーザ</h5>
+													<button type="button" class="btn-close btn-sm"
+														data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<form id="newUserForm">
+														<!-- ユーザ名 -->
+														<div class="mb-3">
+															<label for="newUserName" class="form-label text-primary"
+																style="font-size: 13px;">ユーザ名</label>
+															<input type="text" class="form-control" id="newUserName"
+																name="userName" style="font-size: 13px;">
+														</div>
+														<!-- 電話番号 -->
+														<div class="mb-3">
+															<label for="newUserPhone" class="form-label text-primary"
+																style="font-size: 13px;">電話番号</label>
+															<input type="text" class="form-control" id="newUserPhone"
+																name="userPhone" style="font-size: 13px;">
+														</div>
+														<!-- 会員ステータス -->
+														<div class="mb-3">
+															<label for="newUserStatus" class="form-label text-primary"
+																style="font-size: 13px;">会員ステータス</label>
+															<select class="form-select" id="newUserStatus"
+																name="userStatus" style="font-size: 13px;">
+																<option value="0">アクティブ</option>
+																<option value="1">非アクティブ</option>
+																<option value="2">停止中</option>
+															</select>
+														</div>
+														<!-- メールアドレス -->
+														<div class="mb-3">
+															<label for="newUserEmail" class="form-label text-primary"
+																style="font-size: 13px;">メールアドレス</label>
+															<input type="email" class="form-control" id="newUserEmail"
+																name="userEmail" style="font-size: 13px;">
+														</div>
+														<!-- 会員権限 -->
+														<div class="mb-3">
+															<label for="newUserRoles" class="form-label text-primary"
+																style="font-size: 13px;">会員権限</label>
+															<select class="form-select" id="newUserRoles"
+																name="newUserRoles" style="font-size: 13px;">
+																<option value="0">ゲスト</option>
+																<option value="1">会員</option>
+																<option value="2">非会員</option>
+															</select>
+														</div>
+														<!-- 利用可能のポイント -->
+														<div class="mb-3">
+															<label for="newUserPoints" class="form-label text-primary"
+																style="font-size: 13px;">利用可能のポイント</label>
+															<input type="text" class="form-control" id="newUserPoints"
+																name="userPoints" style="font-size: 13px;">
+														</div>
+														<!-- 郵便番号 -->
+														<div class="mb-3">
+															<label for="newUserPostCode" class="form-label text-primary"
+																style="font-size: 13px;">郵便番号</label>
+															<div class="input-group">
+																<input type="text" class="form-control"
+																	id="newUserPostCode" name="postCode"
+																	style="font-size: 13px;" placeholder="123-4567">
+																<button type="button"
+																	class="btn btn-outline-primary btn-sm"
+																	style="font-size: 13px;"
+																	onclick="searchAddress()">検索</button>
+															</div>
+														</div>
+														<!-- 住所1 -->
+														<div class="mb-3">
+															<label for="newUserAddress1" class="form-label text-primary"
+																style="font-size: 13px;">住所1</label>
+															<input type="text" class="form-control" id="newUserAddress1"
+																name="userAddress1" style="font-size: 13px;">
+														</div>
+														<!-- 住所2 -->
+														<div class="mb-3">
+															<label for="newUserAddress2" class="form-label text-primary"
+																style="font-size: 13px;">住所2</label>
+															<input type="text" class="form-control" id="newUserAddress2"
+																name="userAddress2" style="font-size: 13px;">
+														</div>
+														<!-- 住所3 -->
+														<div class="mb-3">
+															<label for="newUserAddress3" class="form-label text-primary"
+																style="font-size: 13px;">住所3</label>
+															<input type="text" class="form-control" id="newUserAddress3"
+																name="userAddress3" style="font-size: 13px;">
+														</div>
+														<!-- フッターのボタン -->
+														<div class="modal-footer justify-content-center"
+															style="border: none;">
+															<button type="submit"
+																class="btn btn-success btn-sm mr-3">保存する</button>
+															<button type="button" class="btn btn-secondary btn-sm"
+																data-bs-dismiss="modal">閉じる</button>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
 									<!-- 編集モーダル -->
 									<div class="modal fade" id="editModal" tabindex="-1"
 										aria-labelledby="editModalLabel" aria-hidden="true">
@@ -502,7 +625,8 @@
 											style="margin-right:200px;">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title" id="orderHistoryModalLabel">注文履歴 - 佐藤花子</h5>
+													<h5 class="modal-title" id="orderHistoryModalLabel">注文履歴 -
+														佐藤花子</h5>
 													<button type="button" class="btn-close btn-sm"
 														data-bs-dismiss="modal" aria-label="Close"></button>
 												</div>
@@ -510,44 +634,61 @@
 													<table class="table table-striped">
 														<thead>
 															<tr>
-																<th scope="col" style="font-weight:300;">注文日</th>
+																<th scope="col" style="font-weight:300;">注文日
+																</th>
 																<th scope="col" style="font-weight:300;">商品</th>
-																<th scope="col" style="font-weight:300;">合計金額</th>
-																<th scope="col" style="font-weight:300;">ステータス</th>
-																<th scope="col" style="font-weight:300;">支払い方法</th>
+																<th scope="col" style="font-weight:300;">合計金額
+																</th>
+																<th scope="col" style="font-weight:300;">ステータス
+																</th>
+																<th scope="col" style="font-weight:300;">支払い方法
+																</th>
 																<th scope="col" style="font-weight:300;">住所</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr>
-																<td style="font-weight:300; font-size:12px">1001</td>
-																<td style="font-weight:300; font-size:12px">2024/8/10
+																<td style="font-weight:300; font-size:12px">1001
 																</td>
-																<td style="font-weight:300; font-size:12px">商品A</td>
-																<td style="font-weight:300; font-size:12px">¥10,000</td>
+																<td style="font-weight:300; font-size:12px">
+																	2024/8/10
+																</td>
+																<td style="font-weight:300; font-size:12px">商品A
+																</td>
+																<td style="font-weight:300; font-size:12px">
+																	¥10,000</td>
 																<td style="font-weight:300; font-size:12px;">
 																	<span
 																		style="background-color: rgb(154, 247, 216); padding: 2px 10px; border-radius: 3px;">配送中</span>
 																</td>
-																<td style="font-weight:300; font-size:12px">クレジットカード
+																<td style="font-weight:300; font-size:12px">
+																	クレジットカード
 																</td>
 																<td style="font-weight:300; font-size:12px"><a href="#"
 																		data-bs-toggle="modal"
-																		data-bs-target="#addressModal1">住所詳細</a></td>
+																		data-bs-target="#addressModal1">住所詳細</a>
+																</td>
 															</tr>
 															<tr>
-																<td style="font-weight:300; font-size:12px">1002</td>
-																<td style="font-weight:300; font-size:12px">2024/7/25
+																<td style="font-weight:300; font-size:12px">1002
 																</td>
-																<td style="font-weight:300; font-size:12px">商品B</td>
-																<td style="font-weight:300; font-size:12px">¥15,000</td>
-																<td style="font-weight:300; font-size:12px"><span
+																<td style="font-weight:300; font-size:12px">
+																	2024/7/25
+																</td>
+																<td style="font-weight:300; font-size:12px">商品B
+																</td>
+																<td style="font-weight:300; font-size:12px">
+																	¥15,000</td>
+																<td style="font-weight:300; font-size:12px">
+																	<span
 																		style="background-color: rgb(251, 143, 143); padding: 2px 10px; border-radius: 3px;">完了
 																</td>
-																<td style="font-weight:300; font-size:12px">銀行振込</td>
+																<td style="font-weight:300; font-size:12px">銀行振込
+																</td>
 																<td style="font-weight:300; font-size:12px"><a href="#"
 																		data-bs-toggle="modal"
-																		data-bs-target="#addressModal2">住所詳細</a></td>
+																		data-bs-target="#addressModal2">住所詳細</a>
+																</td>
 															</tr>
 														</tbody>
 													</table>
@@ -635,16 +776,24 @@
 			<i class="fas fa-angle-up"></i>
 		</a>
 		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="/assets/vendor/jquery/jquery.min.js"></script>
+		<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+		<script th:src="@{/assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
 		<!-- Bootstrap + Theme scripts -->
 		<script th:src="@{/assets/js/theme.min.js}"></script>
 		<!-- Custom scripts for all pages-->
 		<script th:src="@{/assets/js/sb-admin-2.min.js}"></script>
-
+		<script>
+			// 新規ユーザ情報登録
+			function insertUserInfo() {
+				var newUserModal = new bootstrap.Modal(document.getElementById('newUserModal'), {
+					keyboard: false
+				});
+				newUserModal.show();
+			}
+		</script>
 		<script>
 			// ユーザーのフィルタリング機能
 			function filterUsers() {
@@ -652,12 +801,15 @@
 				const roleFilter = document.getElementById('roleFilter').value;
 				const table = document.getElementById('userTable').getElementsByTagName('tbody')[0];
 				const rows = table.getElementsByTagName('tr');
+
 				for (let i = 0; i < rows.length; i++) {
-					const userName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
-					const email = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
-					const role = rows[i].getElementsByTagName('td')[2].innerText;
+					const userName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase().trim();
+					const email = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase().trim();
+					const role = rows[i].getElementsByTagName('td')[2].innerText.trim();
+
 					const matchesSearch = userName.includes(searchValue) || email.includes(searchValue);
-					const matchesRole = roleFilter === "すべての権限" || role === roleFilter;
+					const matchesRole = roleFilter === "すべての役割" || role === roleFilter;
+
 					if (matchesSearch && matchesRole) {
 						rows[i].style.display = "";
 					} else {
@@ -665,18 +817,6 @@
 					}
 				}
 			}
-
-			// 検索ボタンのイベントリスナー
-			document.getElementById('searchButton').addEventListener('click', function () {
-				filterUsers();
-			});
-
-			// キーボードイベントリスナー、Enterキーで検索を実行
-			document.getElementById('searchUser').addEventListener('keypress', function (e) {
-				if (e.key === 'Enter') {
-					filterUsers();
-				}
-			});
 
 			window.onload = function () {
 				// ユーザー情報フォームの送信イベントリスナー
@@ -762,7 +902,7 @@
 							document.getElementById('editUserPostCode').value = data.postCode || "";
 							document.getElementById('editUserAddress1').value = data.usersAddress1 || "";
 
-							// モーダルを表示（必要に応じて）
+							// モーダルを表示
 							$('#editModal').modal('show');
 						} else {
 							console.error("データが受信されませんでした");
@@ -798,7 +938,7 @@
 				let json = JSON.stringify(object);
 
 				// 更新リクエストを送信
-				fetch('/saveUserInfo', {
+				fetch('/updateUserInfo', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -827,12 +967,15 @@
 				const roleFilter = document.getElementById('roleFilter').value;
 				const table = document.getElementById('userTable').getElementsByTagName('tbody')[0];
 				const rows = table.getElementsByTagName('tr');
+
 				for (let i = 0; i < rows.length; i++) {
-					const userName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
-					const email = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
-					const role = rows[i].getElementsByTagName('td')[2].innerText;
+					const userName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase().trim();
+					const email = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase().trim();
+					const role = rows[i].getElementsByTagName('td')[2].innerText.trim();
+
 					const matchesSearch = userName.includes(searchValue) || email.includes(searchValue);
-					const matchesRole = roleFilter === "すべての権限" || role === roleFilter;
+					const matchesRole = roleFilter === "すべての役割" || role === roleFilter;
+
 					if (matchesSearch && matchesRole) {
 						rows[i].style.display = "";
 					} else {
@@ -853,6 +996,7 @@
 				}
 			});
 		</script>
+
 		<script>
 			function returnToOrderHistory() {
 				// 現在の住所詳細モーダルを閉じる

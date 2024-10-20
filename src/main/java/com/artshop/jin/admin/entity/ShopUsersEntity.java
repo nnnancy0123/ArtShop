@@ -16,11 +16,12 @@ import lombok.Setter;
  *ユーザー情報エンティティ
  * @author Nancy
  * @since 2024-10-06
+ * @version 1.0
  */
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "shop_users")
 public class ShopUsersEntity {
 
 	@Id

@@ -3,9 +3,6 @@ package com.artshop.jin.admin.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,8 +10,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+
+/**
+ *商品情報エンティティ
+ *@author Nancy
+ *@since 2024-10-06
+ *@version 1.0
+ */
 @Entity
-@Table(name = "product")
+@Table(name = "shop_products")
 public class AdminProductListEntity {
 
 	// 商品ID
