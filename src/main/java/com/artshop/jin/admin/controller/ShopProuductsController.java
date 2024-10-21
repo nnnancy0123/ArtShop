@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.artshop.jin.admin.object.AdminProductListObject;
-import com.artshop.jin.admin.service.AdminProductListService;
+import com.artshop.jin.admin.object.ShopProductsObject;
+import com.artshop.jin.admin.service.ShopProductsService;
 
 /**
  * 商品管理クラス
@@ -16,9 +16,9 @@ import com.artshop.jin.admin.service.AdminProductListService;
  * @since 2024-09-30
  */
 @Controller
-public class AdminProuductListController {
+public class ShopProuductsController {
 	@Autowired
-	private AdminProductListService adminProductListService;
+	private ShopProductsService adminProductListService;
 
 	/**
 	 * 商品情報が画面に表示される
@@ -28,7 +28,7 @@ public class AdminProuductListController {
 	public ModelAndView poductList() {
 		ModelAndView mav = new ModelAndView("product-list");
 
-		List<AdminProductListObject> adminProductList = adminProductListService.getProductInfoList();
+		List<ShopProductsObject> adminProductList = adminProductListService.getProductInfoList();
 		mav.addObject("adminProductList", adminProductList);
 
 		return mav;

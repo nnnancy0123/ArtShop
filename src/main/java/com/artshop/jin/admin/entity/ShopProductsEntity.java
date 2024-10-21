@@ -22,7 +22,7 @@ import org.hibernate.annotations.UpdateTimestamp;
  */
 @Entity
 @Table(name = "shop_products")
-public class AdminProductListEntity {
+public class ShopProductsEntity {
 
 	// 商品ID
 	@Id

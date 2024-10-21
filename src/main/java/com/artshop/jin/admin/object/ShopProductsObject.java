@@ -11,7 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-public class AdminProductListObject {
+public class ShopProductsObject {
 
 	// 商品ID
 	@Id
@@ -61,7 +61,7 @@ public class AdminProductListObject {
 	@Column(name = "del_flag")
 	private int delFlag;
 
-	public AdminProductListObject(Long productId, String productName, String productDescription, BigDecimal price,
+	public ShopProductsObject(Long productId, String productName, String productDescription, BigDecimal price,
 			int stockQuantity, int stockStatus, String categoryName, String productPhoto,
 			LocalDateTime createdAtTime, LocalDateTime updatedAtTime,int delFlag) {
 		this.productId = productId;
