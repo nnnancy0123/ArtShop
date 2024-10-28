@@ -25,7 +25,20 @@ import com.artshop.jin.admin.repository.ShopUsersRepository;
 public class ShopUsersService {
 
 	@Autowired
-	private ShopUsersRepository adminUserListRepository;
+	private ShopUsersRepository shopUsersRepository;
+
+
+	/**
+	 * 新規ユーザ情報をDBに登録する
+	 * @param newUserInfo
+	 * @return shopUsersRepository
+	 */
+	public ShopUsersObject creatUserInfo(ShopUsersObject newUserInfo) {
+		//重複ユーザ名、電話番号、メールを判断する
+		
+		return shopUsersRepository.save(newUserInfo);
+	}
+
 	/**
 	 * ユーザ情報リストを取得する
 	 * @return userListEntityList
@@ -33,7 +46,7 @@ public class ShopUsersService {
 	@Transactional
 	public List<ShopUsersObject> getUserInfoList() {
 		// 全てのユーザー情報を取得する
-		List<ShopUsersEntity> userListEntityList = adminUserListRepository.findAll();
+		List<ShopUsersEntity> userListEntityList = shopUsersRepository.findAll();
 
 		return userListEntityList.stream()
 				.map(entity -> new ShopUsersObject(
@@ -52,14 +65,14 @@ public class ShopUsersService {
 						entity.getDelFlag()))
 				.collect(Collectors.toList());
 	}
-	
+
 	/**
 	 * ユーザーIDでユーザー情報を取得する
 	 * @param usersId
 	 */
 	public ShopUsersObject getUserInfoById(Long usersId) {
 		//NullPointerExceptionを防ぐするため(orElse)
-		ShopUsersEntity userInfo = adminUserListRepository.findByUsersIdAndDelFlag(usersId, "0").orElse(null);
+		ShopUsersEntity userInfo = shopUsersRepository.findByUsersIdAndDelFlag(usersId, "0").orElse(null);
 		;
 		if (userInfo != null) {
 			return new ShopUsersObject(
@@ -100,10 +113,10 @@ public class ShopUsersService {
 			String postCode, String address1, String address2, String address3, String deFlag) {
 
 		//既存のユーザIDから該当のユーザ情報を取得
-		ShopUsersEntity existingEntity = adminUserListRepository.findByUsersIdAndDelFlag(usersId, "0").orElse(null);
+		ShopUsersEntity existingEntity = shopUsersRepository.findByUsersIdAndDelFlag(usersId, "0").orElse(null);
 
-		boolean res = adminUserListRepository.existsById(usersId);
-		
+		boolean res = shopUsersRepository.existsById(usersId);
+
 		if (!res) {
 			existingEntity.setUsersName(name);
 			existingEntity.setUsersMail(email);
@@ -116,7 +129,7 @@ public class ShopUsersService {
 			existingEntity.setUpdatedAtTime(LocalDateTime.now());
 
 			//取得した該当のユーザ情報をエンティティに保存する
-			ShopUsersEntity saveUserInfoById = adminUserListRepository.save(existingEntity);
+			ShopUsersEntity saveUserInfoById = shopUsersRepository.save(existingEntity);
 
 			//保存したユーザ情報がオブジェクトに返却する
 			return new ShopUsersObject(
@@ -148,7 +161,7 @@ public class ShopUsersService {
 	public ShopUsersObject delUserInfo(Long usersId) {
 
 		//ユーザの情報を見つける
-		Optional<ShopUsersEntity> optionalUser = adminUserListRepository.findById(usersId);
+		Optional<ShopUsersEntity> optionalUser = shopUsersRepository.findById(usersId);
 
 		//ユーザ存在することを判断する
 		if (optionalUser.isPresent()) {
@@ -158,7 +171,7 @@ public class ShopUsersService {
 			// 更新日時を設定
 			userDel.setUpdatedAtTime(LocalDateTime.now());
 			//更新した情報を返す
-			adminUserListRepository.save(userDel);
+			shopUsersRepository.save(userDel);
 			return new ShopUsersObject(
 					userDel.getUsersId(),
 					userDel.getUsersName(),

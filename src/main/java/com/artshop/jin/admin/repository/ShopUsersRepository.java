@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.artshop.jin.admin.entity.ShopUsersEntity;
+import com.artshop.jin.admin.object.ShopUsersObject;
 
 /**
  * ユーザー情報管理リポジトリ
@@ -18,5 +19,7 @@ public interface ShopUsersRepository extends JpaRepository<ShopUsersEntity, Long
 	
 	// ユーザーID と delFlag でユーザ情報を取得
 	Optional<ShopUsersEntity> findByUsersIdAndDelFlag(Long usersId, String delFlag);
+
+	ShopUsersObject save(ShopUsersObject newUserInfo);
 	
 }

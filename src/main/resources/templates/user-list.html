@@ -468,25 +468,11 @@
 															<input type="text" class="form-control" id="newUserAddress1"
 																name="userAddress1" style="font-size: 13px;">
 														</div>
-														<!-- 住所2 -->
-														<div class="mb-3">
-															<label for="newUserAddress2" class="form-label text-primary"
-																style="font-size: 13px;">住所2</label>
-															<input type="text" class="form-control" id="newUserAddress2"
-																name="userAddress2" style="font-size: 13px;">
-														</div>
-														<!-- 住所3 -->
-														<div class="mb-3">
-															<label for="newUserAddress3" class="form-label text-primary"
-																style="font-size: 13px;">住所3</label>
-															<input type="text" class="form-control" id="newUserAddress3"
-																name="userAddress3" style="font-size: 13px;">
-														</div>
 														<!-- フッターのボタン -->
 														<div class="modal-footer justify-content-center"
 															style="border: none;">
-															<button type="submit"
-																class="btn btn-success btn-sm mr-3">保存する</button>
+															<button type="submit" class="btn btn-success btn-sm mr-3"
+																onclick="submitUserForm()">登録する</button>
 															<button type="button" class="btn btn-secondary btn-sm"
 																data-bs-dismiss="modal">閉じる</button>
 														</div>
@@ -787,6 +773,42 @@
 		<!-- Custom scripts for all pages-->
 		<script th:src="@{/assets/js/sb-admin-2.min.js}"></script>
 		<script>
+			//画面から新規ユーザ情報を取得する
+			function submitUserForm() {
+				const newUserInfo = {
+					userName: document.getElementById("newUserName").value,
+					userPhone: document.getElementById("newUserPhone").value,
+					userStatus: document.getElementById("newUserStatus").value,
+					userEmail: document.getElementById("newUserEmail").value,
+					userRoles: document.getElementById("newUserRoles").value,
+					userPoints: document.getElementById("newUserPoints").value,
+					userPostCode: document.getElementById("newUserPostCode").value,
+					userAddress1: document.getElementById("newUserAddress1").value
+				};
+
+				fetch('/api/users/register', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(newUserInfo)
+				})
+					.then(response => {
+						if (response.ok) {
+							alert("ユーザ登録成功！");
+							//モーダルを閉じて、ページを更新するか、フォームの内容をリセットします。
+							document.getElementById("newUserForm").reset();
+							let modal = bootstrap.Modal.getInstance(document.getElementById("newUserModal"));
+							modal.hide();
+						} else {
+							alert("ユーザ登録失敗");
+						}
+					})
+					.catch(error => {
+						console.error("Error:", error);
+						alert("エラーが発生しました");
+					});
+			}
 			// ユーザーのフィルタリング機能
 			function filterUsers() {
 				const searchValue = document.getElementById('searchUser').value.toLowerCase();
