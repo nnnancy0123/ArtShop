@@ -26,19 +26,6 @@ public class ShopUsersService {
 
 	@Autowired
 	private ShopUsersRepository shopUsersRepository;
-
-
-	/**
-	 * 新規ユーザ情報をDBに登録する
-	 * @param newUserInfo
-	 * @return shopUsersRepository
-	 */
-	public ShopUsersObject creatUserInfo(ShopUsersObject newUserInfo) {
-		//重複ユーザ名、電話番号、メールを判断する
-		
-		return shopUsersRepository.save(newUserInfo);
-	}
-
 	/**
 	 * ユーザ情報リストを取得する
 	 * @return userListEntityList
@@ -64,6 +51,20 @@ public class ShopUsersService {
 						entity.getUsersPoints(),
 						entity.getDelFlag()))
 				.collect(Collectors.toList());
+	}
+
+	/**
+	 * 新規ユーザ情報をDBに登録する
+	 * @param newUserInfo
+	 * @return shopUsersRepository
+	 */
+	public ShopUsersObject creatUserInfo(ShopUsersObject newUserInfo) {
+		//登録ユーザ名とメールを使用していることを判断する
+		if (shopUsersRepository.findByUsersNameAndUsersMail(newUserInfo.getUsersName(), newUserInfo.getUsersMail())
+				.isPresent()) {
+			throw new IllegalArgumentException("このユーザ名とメールは既に使用されています。");
+		}
+		return shopUsersRepository.save(newUserInfo);
 	}
 
 	/**

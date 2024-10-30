@@ -16,10 +16,13 @@ import com.artshop.jin.admin.object.ShopUsersObject;
  */
 @Repository
 public interface ShopUsersRepository extends JpaRepository<ShopUsersEntity, Long> {
-	
+
 	// ユーザーID と delFlag でユーザ情報を取得
 	Optional<ShopUsersEntity> findByUsersIdAndDelFlag(Long usersId, String delFlag);
 
+	// ユーザー名やメールアドレスを基にユーザーを検索する
+	Optional<ShopUsersEntity> findByUsersNameAndUsersMail(String usersName, String usersMail);
+
 	ShopUsersObject save(ShopUsersObject newUserInfo);
-	
+
 }

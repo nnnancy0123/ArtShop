@@ -42,6 +42,17 @@ public class ShopUsersController {
 
 		return mav;
 	}
+	
+	/**
+	 * 新規ユーザを登録する
+	 * @param newUser
+	 * @return
+	 */
+	@PostMapping("/api/users/register")
+	public ResponseEntity<ShopUsersObject> registUser(@RequestBody ShopUsersObject newUser){	
+		ShopUsersObject createUser = shopUsersService.creatUserInfo(newUser);
+		 return ResponseEntity.ok(createUser);
+	}
 
 	/**
 	 * ユーザーIDでユーザー情報を取得する

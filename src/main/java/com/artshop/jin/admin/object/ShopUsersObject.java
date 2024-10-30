@@ -3,12 +3,15 @@ package com.artshop.jin.admin.object;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+@Entity
+@Table(name = "shop_users")
 public class ShopUsersObject {
 
 	/**
