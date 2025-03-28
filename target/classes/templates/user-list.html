@@ -402,25 +402,21 @@
 															<label for="newUserName" class="form-label text-primary"
 																style="font-size: 13px;">ユーザ名</label>
 															<input type="text" class="form-control" id="newUserName"
-																name="userName" style="font-size: 13px;">
+																name="usersName" style="font-size: 13px;">
 														</div>
-														<!-- 電話番号 -->
+														<!-- 暗証番号 -->
+														<div class="mb-3">
+															<label for="newUserPassword" class="form-label text-primary"
+																style="font-size: 13px;">暗証番号</label>
+															<input type="text" class="form-control" id="newUserPassword"
+																name="usersPassword" style="font-size: 13px;">
+														</div>
+														<!-- 携帯番号 -->
 														<div class="mb-3">
 															<label for="newUserPhone" class="form-label text-primary"
-																style="font-size: 13px;">電話番号</label>
+																style="font-size: 13px;">携帯番号</label>
 															<input type="text" class="form-control" id="newUserPhone"
 																name="userPhone" style="font-size: 13px;">
-														</div>
-														<!-- 会員ステータス -->
-														<div class="mb-3">
-															<label for="newUserStatus" class="form-label text-primary"
-																style="font-size: 13px;">会員ステータス</label>
-															<select class="form-select" id="newUserStatus"
-																name="userStatus" style="font-size: 13px;">
-																<option value="0">アクティブ</option>
-																<option value="1">非アクティブ</option>
-																<option value="2">停止中</option>
-															</select>
 														</div>
 														<!-- メールアドレス -->
 														<div class="mb-3">
@@ -438,6 +434,17 @@
 																<option value="0">ゲスト</option>
 																<option value="1">会員</option>
 																<option value="2">非会員</option>
+															</select>
+														</div>
+														<!-- 会員ステータス -->
+														<div class="mb-3">
+															<label for="newUserStatus" class="form-label text-primary"
+																style="font-size: 13px;">会員ステータス</label>
+															<select class="form-select" id="newUserStatus"
+																name="userStatus" style="font-size: 13px;">
+																<option value="0">アクティブ</option>
+																<option value="1">非アクティブ</option>
+																<option value="2">停止中</option>
 															</select>
 														</div>
 														<!-- 利用可能のポイント -->
@@ -501,6 +508,20 @@
 															<input type="text" class="form-control" id="editUserName"
 																name="usersName" style="font-size: 13px;">
 														</div>
+														<!-- 暗証番号 -->
+														<div class="mb-3">
+															<label for="editUserPassword" class="form-label text-primary"
+																style="font-size: 13px;">暗証番号</label>
+															<input type="text" class="form-control" id="editUserPassword"
+																name="usersPassword" style="font-size: 13px;">
+														</div>
+														<!-- 携帯番号 -->
+														<div class="mb-3">
+															<label for="editUserPhone" class="form-label text-primary"
+																style="font-size: 13px;">携帯番号</label>
+															<input type="text" class="form-control" id="editUserPhone"
+																name="userPhone" style="font-size: 13px;">
+														</div>
 														<!-- メールアドレス -->
 														<div class="mb-3">
 															<label for="editUserEmail" class="form-label text-primary"
@@ -557,15 +578,6 @@
 																style="font-size: 13px;">住所2</label>
 															<input type="text" class="form-control"
 																id="editUserAddress2" name="usersAddress2"
-																style="font-size: 13px;">
-														</div>
-														<!-- 住所3 -->
-														<div class="mb-3">
-															<label for="editUserAddress3"
-																class="form-label text-primary"
-																style="font-size: 13px;">住所3</label>
-															<input type="text" class="form-control"
-																id="editUserAddress3" name="usersAddress3"
 																style="font-size: 13px;">
 														</div>
 														<!-- フッターのボタン -->
@@ -776,14 +788,15 @@
 			//画面から新規ユーザ情報を取得する
 			function submitUserForm() {
 				const newUserInfo = {
-					userName: document.getElementById("newUserName").value,
-					userPhone: document.getElementById("newUserPhone").value,
-					userStatus: document.getElementById("newUserStatus").value,
-					userEmail: document.getElementById("newUserEmail").value,
-					userRoles: document.getElementById("newUserRoles").value,
-					userPoints: document.getElementById("newUserPoints").value,
-					userPostCode: document.getElementById("newUserPostCode").value,
-					userAddress1: document.getElementById("newUserAddress1").value
+					usersName: document.getElementById("newUserName").value,
+					usersPassword: document.getElementById("newUserPassword").value,
+					usersMail: document.getElementById("newUserEmail").value,
+					usersPhone: document.getElementById("newUserPhone").value,
+					usersRoles: document.getElementById("newUserRoles").value,
+					usersStatus: document.getElementById("newUserStatus").value,
+					postCode: document.getElementById("newUserPostCode").value,
+					usersAddress1: document.getElementById("newUserAddress1").value,
+					usersPoints: document.getElementById("newUserPoints").value
 				};
 
 				fetch('/api/users/register', {
@@ -839,12 +852,14 @@
 
 					// 送信するユーザーデータを作成
 					const updatedUserData = {
-						name: document.getElementById('editUserName').value || "",  // フィールドにデフォルト値を設定
-						email: document.getElementById('editUserEmail').value || "",
-						role: document.getElementById('editUserRoles').value || "",
-						points: document.getElementById('editUserPoints').value || 0,
-						postalCode: document.getElementById('editUserPostCode').value || "",
-						address: document.getElementById('editUserAddress1').value || ""
+						usersName: document.getElementById('editUserName').value || "",  // フィールドにデフォルト値を設定
+						usersPassword: document.getElementById('editUserPassword').value || "",
+						usersPhone: document.getElementById('editUserPhone').value || "",
+						usersMail: document.getElementById('editUserEmail').value || "",
+						usersRoles: document.getElementById('editUserRoles').value || "",
+						usersPoints: document.getElementById('editUserPoints').value || 0,
+						postCode: document.getElementById('editUserPostCode').value || "",
+						usersAddress1: document.getElementById('editUserAddress1').value || ""
 					};
 
 					// 更新リクエストを送信
@@ -867,15 +882,17 @@
 			// ユーザー情報を取得し、モーダルに表示する関数
 			function fetchUserInfo(element) {
 				const userId = element.getAttribute('data-userid');  // ユーザーIDを取得
-				console.log("取得したユーザーID:", userId);
+				console.log("取得したユーザーID:", usersId);
 
-				fetch(`/getUserInfo?userId=${userId}`)
+				fetch(`/getUserInfo?userId=${usersId}`)
 					.then(response => response.json())
 					.then(data => {
 						console.log("取得したユーザーデータ:", data);
 						if (data) {
 							// モーダルにデータを入力
 							document.getElementById('editUserName').value = data.usersName || "";
+							document.getElementById('editUserPassword').value = data.usersPassword || "";
+							document.getElementById('editUserPhone').value = data.usersPhone || "";
 							document.getElementById('editUserEmail').value = data.usersMail || "";
 							document.getElementById('editUserRoles').value = data.usersRoles || "";
 							document.getElementById('editUserPoints').value = data.usersPoints || 0;
@@ -910,6 +927,8 @@
 						if (data) {
 							// モーダルにデータを入力
 							document.getElementById('editUserName').value = data.usersName || "";
+							document.getElementById('editUserPassword').value = data.usersPassword || "";
+							document.getElementById('editUserPhone').value = data.usersPhone || "";
 							document.getElementById('editUserEmail').value = data.usersMail || "";
 							document.getElementById('editUserRoles').value = data.usersRoles || "";
 							document.getElementById('editUserPoints').value = data.usersPoints || 0;
