@@ -7,6 +7,12 @@ import com.artshop.jin.admin.dto.AdminProductManagementDto;
 import com.artshop.jin.admin.entity.AdminProductManagementEntity;
 import com.artshop.jin.admin.repository.AdminProductManagementRepository;
 
+/**
+ * 商品情報管理サービス
+ * @author Nancy
+ * @since 2025-03-28
+ * @version 2.0
+ */
 @Service
 public class AdminProductManagementService {
 	@Autowired
@@ -42,7 +48,7 @@ public class AdminProductManagementService {
 		ProductManagementResult.setDelFlag(savedProductManagementInfo.isDelFlag());
 		ProductManagementResult.setCreatedAt(savedProductManagementInfo.getCreatedAt());
 		ProductManagementResult.setUpdatedAt(savedProductManagementInfo.getUpdatedAt());
-		
+
 		return ProductManagementResult;
 	}
 
