@@ -1,5 +1,8 @@
 package com.artshop.jin.admin.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +26,7 @@ public class AdminProductManagementService {
 		AdminProductManagementEntity adminProductManagementEntity = new AdminProductManagementEntity();
 
 		adminProductManagementEntity.setProductId(adminProductInfo.getProductId());
-		adminProductManagementEntity.setProductName(adminProductInfo.getCategoryName());
+		adminProductManagementEntity.setProductName(adminProductInfo.getProductName());
 		adminProductManagementEntity.setProductDescription(adminProductInfo.getProductDescription());
 		adminProductManagementEntity.setCategoryName(adminProductInfo.getCategoryName());
 		adminProductManagementEntity.setPrice(adminProductInfo.getPrice());
@@ -52,4 +55,34 @@ public class AdminProductManagementService {
 		return ProductManagementResult;
 	}
 
+	//全ての商品が取得して、画面の商品一覧に映す
+	public List<AdminProductManagementDto> findAllProductInfo() {
+		List<AdminProductManagementEntity> allProductInfo = adminProductManagementRepository.findAll();
+
+		List<AdminProductManagementDto> adminProductDtoList = new ArrayList<>();
+		for (AdminProductManagementEntity entity : allProductInfo) {
+			AdminProductManagementDto dto = new AdminProductManagementDto();
+			dto.setProductId(entity.getProductId());
+			dto.setProductName(entity.getProductName());
+			dto.setProductDescription(entity.getProductDescription());
+			dto.setCategoryName(entity.getCategoryName());
+			dto.setPrice(entity.getPrice());
+			dto.setStockQuantity(entity.getStockQuantity());
+			dto.setStockStatus(entity.isStockStatus());
+			dto.setProductPhoto(entity.getProductPhoto());
+			dto.setDelFlag(entity.isDelFlag());
+			dto.setCreatedAt(entity.getCreatedAt());
+			dto.setUpdatedAt(entity.getUpdatedAt());
+			adminProductDtoList.add(dto);
+		}
+		return adminProductDtoList;
+	}
+
+	public void deleteProductById(Long productId) {
+		
+		if (!adminProductManagementRepository.existsById(productId)) {
+			throw new RuntimeException("該当商品が見つかりません。ID: " + productId);
+		}
+		adminProductManagementRepository.deleteById(productId);
+	}
 }
