@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @since 2025-03-28
  * @version 2.0
  */
-public class AdminProductManagementDto {
+public class ProductInfoDto {
 	// 商品ID
 	private Long productId;
 	// 商品名
@@ -24,21 +24,21 @@ public class AdminProductManagementDto {
 	 // 在庫数
 	private int stockQuantity;
 	 // 販売フラグ
-	private boolean stockStatus;
+	private String stockStatus;
 	 // 商品写真
 	private String productPhoto;
 	 // 削除フラグ
-	private boolean delFlag;
+	private String delFlag;
 	 // 作成時間(自動設定、フロント送信不要)
 	private LocalDateTime createdAt;
 	 // 更新時間(自動更新、read-only)
 	private LocalDateTime updatedAt;
 
-	public AdminProductManagementDto() {
+	public ProductInfoDto() {
 	}
 
-	public AdminProductManagementDto(Long productId, String productName, String productDescription, String categoryName,
-			BigDecimal price, int stockQuantity, boolean stockStatus, String productPhoto) {
+	public ProductInfoDto(Long productId, String productName, String productDescription, String categoryName,
+			BigDecimal price, int stockQuantity, String stockStatus, String productPhoto) {
 		this.productId = productId;
 		this.productName = productName;
 		this.productDescription = productDescription;
@@ -136,14 +136,14 @@ public class AdminProductManagementDto {
 	/**
 	 * @return stockStatus
 	 */
-	public boolean isStockStatus() {
+	public String getStockStatus() {
 		return stockStatus;
 	}
 
 	/**
 	 * @param stockStatus セットする stockStatus
 	 */
-	public void setStockStatus(boolean stockStatus) {
+	public void setStockStatus(String stockStatus) {
 		this.stockStatus = stockStatus;
 	}
 
@@ -164,14 +164,14 @@ public class AdminProductManagementDto {
 	/**
 	 * @return delFlag
 	 */
-	public boolean isDelFlag() {
+	public String getDelFlag() {
 		return delFlag;
 	}
 
 	/**
 	 * @param delFlag セットする delFlag
 	 */
-	public void setDelFlag(boolean delFlag) {
+	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
 	}
 

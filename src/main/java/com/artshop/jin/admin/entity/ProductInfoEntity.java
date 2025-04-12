@@ -22,8 +22,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *@version 2.0
  */
 @Entity
-@Table(name = "product_management")
-public class AdminProductManagementEntity {
+@Table(name = "product_info")
+public class ProductInfoEntity {
 
 	// 商品ID
 	@Id
@@ -48,13 +48,13 @@ public class AdminProductManagementEntity {
 	private int stockQuantity;
 
 	// 販売フラグ
-	private boolean stockStatus;
+	private String stockStatus;
 
 	// 商品写真
 	private String productPhoto;
 
 	// 削除フラグ
-	private boolean delFlag;
+	private String delFlag;
 
 	// 作成時間
 	@CreationTimestamp
@@ -67,7 +67,7 @@ public class AdminProductManagementEntity {
 	/**
 	 * @return productId
 	 */
-	@JsonProperty("id")
+	@JsonProperty("productId")
 	public Long getProductId() {
 		return productId;
 	}
@@ -152,14 +152,14 @@ public class AdminProductManagementEntity {
 	/**
 	 * @return stockStatus
 	 */
-	public boolean isStockStatus() {
+	public String getStockStatus() {
 		return stockStatus;
 	}
 
 	/**
 	 * @param stockStatus セットする stockStatus
 	 */
-	public void setStockStatus(boolean stockStatus) {
+	public void setStockStatus(String stockStatus) {
 		this.stockStatus = stockStatus;
 	}
 
@@ -180,14 +180,14 @@ public class AdminProductManagementEntity {
 	/**
 	 * @return delFlag
 	 */
-	public boolean isDelFlag() {
+	public String getDelFlag() {
 		return delFlag;
 	}
 
 	/**
 	 * @param delFlag セットする delFlag
 	 */
-	public void setDelFlag(boolean delFlag) {
+	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
 	}
 
