@@ -54,6 +54,7 @@ public class AdminProductManagementController {
 			@RequestParam("price") BigDecimal price,
 			@RequestParam("stockQuantity") int stockQuantity,
 			@RequestParam("stockStatus") String stockStatus,
+			@RequestParam("delFlag") String delFlag,
 			@RequestParam(value = "productPhoto", required = false) MultipartFile productPhoto) {
 
 		ProductInfoDto adminProductManagementDto = new ProductInfoDto();
@@ -63,6 +64,7 @@ public class AdminProductManagementController {
 		adminProductManagementDto.setPrice(price);
 		adminProductManagementDto.setStockQuantity(stockQuantity);
 		adminProductManagementDto.setStockStatus(stockStatus);
+		adminProductManagementDto.setDelFlag(delFlag);
 
 		if (productPhoto != null && !productPhoto.isEmpty()) {
 			adminProductManagementDto.setProductPhoto(productPhoto.getOriginalFilename());

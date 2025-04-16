@@ -36,8 +36,8 @@ public class AdminProductManagementService {
 		adminProductManagementEntity.setPrice(adminProductInfo.getPrice());
 		adminProductManagementEntity.setStockQuantity(adminProductInfo.getStockQuantity());
 		adminProductManagementEntity.setStockStatus(adminProductInfo.getStockStatus());
-		adminProductManagementEntity.setProductPhoto(adminProductInfo.getProductPhoto());
 		adminProductManagementEntity.setDelFlag(adminProductInfo.getDelFlag());
+		adminProductManagementEntity.setProductPhoto(adminProductInfo.getProductPhoto());
 
 		//画面の商品情報をEntityにマッピングする
 		ProductInfoEntity savedProductInfo = adminProductManagementRepository
@@ -51,8 +51,8 @@ public class AdminProductManagementService {
 		productInfoResult.setPrice(savedProductInfo.getPrice());
 		productInfoResult.setStockQuantity(savedProductInfo.getStockQuantity());
 		productInfoResult.setStockStatus(savedProductInfo.getStockStatus());
-		productInfoResult.setProductPhoto(savedProductInfo.getProductPhoto());
 		productInfoResult.setDelFlag(savedProductInfo.getDelFlag());
+		productInfoResult.setProductPhoto(savedProductInfo.getProductPhoto());
 		productInfoResult.setCreatedAt(savedProductInfo.getCreatedAt());
 		productInfoResult.setUpdatedAt(savedProductInfo.getUpdatedAt());
 
@@ -77,8 +77,8 @@ public class AdminProductManagementService {
 			adminProductManagementDto.setPrice(adminProductManagementEntity.getPrice());
 			adminProductManagementDto.setStockQuantity(adminProductManagementEntity.getStockQuantity());
 			adminProductManagementDto.setStockStatus(adminProductManagementEntity.getStockStatus());
-			adminProductManagementDto.setProductPhoto(adminProductManagementEntity.getProductPhoto());
 			adminProductManagementDto.setDelFlag(adminProductManagementEntity.getDelFlag());
+			adminProductManagementDto.setProductPhoto(adminProductManagementEntity.getProductPhoto());
 			adminProductManagementDto.setCreatedAt(adminProductManagementEntity.getCreatedAt());
 			adminProductManagementDto.setUpdatedAt(adminProductManagementEntity.getUpdatedAt());
 			adminProductDtoList.add(adminProductManagementDto);
@@ -121,8 +121,8 @@ public class AdminProductManagementService {
 		existingProduct.setPrice(productInfo.getPrice());
 		existingProduct.setStockQuantity(productInfo.getStockQuantity());
 		existingProduct.setStockStatus(productInfo.getStockStatus());
-		existingProduct.setProductPhoto(productInfo.getProductPhoto());
 		existingProduct.setDelFlag(productInfo.getDelFlag());
+		existingProduct.setProductPhoto(productInfo.getProductPhoto());
 
 		//商品情報を更新する
 		ProductInfoEntity updatedProduct = adminProductManagementRepository
@@ -137,8 +137,8 @@ public class AdminProductManagementService {
 		adminProductInfoById.setPrice(updatedProduct.getPrice());
 		adminProductInfoById.setStockQuantity(updatedProduct.getStockQuantity());
 		adminProductInfoById.setStockStatus(updatedProduct.getStockStatus());
-		adminProductInfoById.setProductPhoto(updatedProduct.getProductPhoto());
 		adminProductInfoById.setDelFlag(updatedProduct.getDelFlag());
+		adminProductInfoById.setProductPhoto(updatedProduct.getProductPhoto());
 		adminProductInfoById.setCreatedAt(updatedProduct.getCreatedAt());
 		adminProductInfoById.setUpdatedAt(updatedProduct.getUpdatedAt());
 		
