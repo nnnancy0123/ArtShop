@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.artshop.jin.admin.entity.ProductInfoEntity;
 
 @Repository
-public interface AdminProductManagementRepository extends JpaRepository<ProductInfoEntity, Long> {
+public interface ProductManagementRepository extends JpaRepository<ProductInfoEntity, Long> {
 }

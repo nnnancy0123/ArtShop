@@ -1,49 +1,42 @@
-package com.artshop.jin.admin.entity;
+package com.artshop.jin.admin.dto;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
- *商品カテゴリエンティティ
- *@author Nancy
- *@since 2025-04-17
- *@version 2.0
+ * 商品カテゴリDTO
+ * フロントエンドとのデータ受け渡し用クラス
+ * @author Nancy
+ * @since 2025-04-17
+ * @version 2.0
  */
-@Entity
-@Table(name = "product_category")
-public class ProductCategoryEntity {
-	
-	//	カテゴリID
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "category_id")
+public class ProductCategoryDto {
+
 	private Long categoryId;
-	
+
 	//	カテゴリ名
-	@JsonProperty("category_name")
 	private String categoryName;
-	
+
 	// 作成時間
-	@CreationTimestamp
 	private LocalDateTime createdAt;
-	
+
 	// 更新時間
-	@UpdateTimestamp
 	private LocalDateTime updatedAt;
-	
+
 	// 削除フラグ
 	private String delFlag;
+
+	public ProductCategoryDto() {
+
+	}
+
+	public ProductCategoryDto(Long categoryId, String categoryName, LocalDateTime createdAt, LocalDateTime updatedAt,
+			String delFlag) {
+		this.categoryId = categoryId;
+		this.categoryName = categoryName;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.delFlag = delFlag;
+	}
 
 	/**
 	 * @return categoryId
@@ -114,5 +107,5 @@ public class ProductCategoryEntity {
 	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
 	}
-	
+
 }

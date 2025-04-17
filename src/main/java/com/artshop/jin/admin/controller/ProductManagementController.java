@@ -1,9 +1,11 @@
 package com.artshop.jin.admin.controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.artshop.jin.admin.dto.ProductInfoDto;
-import com.artshop.jin.admin.service.AdminProductManagementService;
+import com.artshop.jin.admin.service.ProductManagementService;
 
 /**
  * 商品情報管理コントローラ
@@ -30,10 +32,10 @@ import com.artshop.jin.admin.service.AdminProductManagementService;
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "http://localhost:3000")
-public class AdminProductManagementController {
+public class ProductManagementController {
 
 	@Autowired
-	private AdminProductManagementService adminProductManagementService;
+	private ProductManagementService adminProductManagementService;
 
 	/**
 	 * 商品登録
@@ -42,12 +44,13 @@ public class AdminProductManagementController {
 	 * @param categoryName 商品カテゴリ
 	 * @param price 商品価格
 	 * @param stockQuantity 在庫数
-	 * @param stockStatus 販売状態（true=上架）
+	 * @param stockStatus 販売状態（0=販売中, 1=停止中）
+	 * @param delFlag 表示フラグ（0=表示, 1=非表示）
 	 * @param productPhoto 商品画像
 	 * @return 登録結果（商品情報DTO）
 	 */
 	@PostMapping
-	public ResponseEntity<ProductInfoDto> createProductInfo(
+	public ResponseEntity<?> createProductInfo(
 			@RequestParam("productName") String productName,
 			@RequestParam("productDescription") String productDescription,
 			@RequestParam("categoryName") String categoryName,
@@ -70,8 +73,14 @@ public class AdminProductManagementController {
 			adminProductManagementDto.setProductPhoto(productPhoto.getOriginalFilename());
 		}
 
-		ProductInfoDto result = adminProductManagementService.createProductInfo(adminProductManagementDto);
-		return ResponseEntity.ok(result);
+		try {
+			ProductInfoDto result = adminProductManagementService.createProductInfo(adminProductManagementDto,
+					productPhoto);
+			return ResponseEntity.ok(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("商品登録に失敗しました");
+		}
 	}
 
 	/**

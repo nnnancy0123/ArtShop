@@ -1,14 +1,17 @@
 package com.artshop.jin.admin.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.artshop.jin.admin.dto.ProductInfoDto;
 import com.artshop.jin.admin.entity.ProductInfoEntity;
-import com.artshop.jin.admin.repository.AdminProductManagementRepository;
+import com.artshop.jin.admin.repository.ProductManagementRepository;
 
 /**
  * 商品情報管理サービス
@@ -17,18 +20,26 @@ import com.artshop.jin.admin.repository.AdminProductManagementRepository;
  * @version 2.0
  */
 @Service
-public class AdminProductManagementService {
+public class ProductManagementService {
 	@Autowired
-	private AdminProductManagementRepository adminProductManagementRepository;
+	private ProductManagementRepository productManagementRepository;
 
 	/**
 	 * 画面から登録された情報をEntityに変換して保存し、保存結果もDTOで返す
 	 * @param adminProductInfo
 	 * @return　商品情報結果
 	 */
-	public ProductInfoDto createProductInfo(ProductInfoDto adminProductInfo) {
-		ProductInfoEntity adminProductManagementEntity = new ProductInfoEntity();
+	public ProductInfoDto createProductInfo(ProductInfoDto adminProductInfo, MultipartFile productPhoto)
+			throws IOException {
 
+		String uploadDir = "uploads/";
+		File uploadDirFile = new File(uploadDir);
+
+		if (!uploadDirFile.exists()) {
+			uploadDirFile.mkdirs(); // 创建 uploads 文件夹
+		}
+
+		ProductInfoEntity adminProductManagementEntity = new ProductInfoEntity();
 		adminProductManagementEntity.setProductId(adminProductInfo.getProductId());
 		adminProductManagementEntity.setProductName(adminProductInfo.getProductName());
 		adminProductManagementEntity.setProductDescription(adminProductInfo.getProductDescription());
@@ -37,10 +48,20 @@ public class AdminProductManagementService {
 		adminProductManagementEntity.setStockQuantity(adminProductInfo.getStockQuantity());
 		adminProductManagementEntity.setStockStatus(adminProductInfo.getStockStatus());
 		adminProductManagementEntity.setDelFlag(adminProductInfo.getDelFlag());
-		adminProductManagementEntity.setProductPhoto(adminProductInfo.getProductPhoto());
+
+		// 如果有上传文件，处理图片上传
+		if (productPhoto != null && !productPhoto.isEmpty()) {
+			String fileName = productPhoto.getOriginalFilename();
+			String filePath = uploadDir + fileName;
+
+			productPhoto.transferTo(new File(filePath));
+
+			// 设置图片文件名到数据库
+			adminProductManagementEntity.setProductPhoto(fileName);
+		}
 
 		//画面の商品情報をEntityにマッピングする
-		ProductInfoEntity savedProductInfo = adminProductManagementRepository
+		ProductInfoEntity savedProductInfo = productManagementRepository
 				.save(adminProductManagementEntity);
 		//取得された情報が画面DTOにセットする
 		ProductInfoDto productInfoResult = new ProductInfoDto();
@@ -64,7 +85,7 @@ public class AdminProductManagementService {
 	 * @return　商品一覧リスト
 	 */
 	public List<ProductInfoDto> findAllProductInfo() {
-		List<ProductInfoEntity> allProductInfo = adminProductManagementRepository.findAll();
+		List<ProductInfoEntity> allProductInfo = productManagementRepository.findAll();
 
 		List<ProductInfoDto> adminProductDtoList = new ArrayList<>();
 
@@ -93,12 +114,12 @@ public class AdminProductManagementService {
 	 */
 	public void deleteProductById(Long productId) {
 		//商品IDの存在を確認する
-		if (!adminProductManagementRepository.existsById(productId)) {
+		if (!productManagementRepository.existsById(productId)) {
 			//商品ID存在しない場合，例外をスローする
 			throw new RuntimeException("該当商品が見つかりません。ID: " + productId);
 		}
 		//存在する場合、該当商品を削除する
-		adminProductManagementRepository.deleteById(productId);
+		productManagementRepository.deleteById(productId);
 	}
 
 	/**
@@ -109,7 +130,7 @@ public class AdminProductManagementService {
 	public ProductInfoDto updateProductInfo(ProductInfoDto productInfo) {
 
 		//商品IDで既存のデータを選択する
-		ProductInfoEntity existingProduct = adminProductManagementRepository
+		ProductInfoEntity existingProduct = productManagementRepository
 				.findById(productInfo.getProductId())
 				.orElseThrow(() -> new RuntimeException("対象商品が見つかりません。ID: " + productInfo.getProductId()));
 
@@ -125,7 +146,7 @@ public class AdminProductManagementService {
 		existingProduct.setProductPhoto(productInfo.getProductPhoto());
 
 		//商品情報を更新する
-		ProductInfoEntity updatedProduct = adminProductManagementRepository
+		ProductInfoEntity updatedProduct = productManagementRepository
 				.save(existingProduct);
 
 		//商品情報DTOに変換して返す
@@ -141,7 +162,7 @@ public class AdminProductManagementService {
 		adminProductInfoById.setProductPhoto(updatedProduct.getProductPhoto());
 		adminProductInfoById.setCreatedAt(updatedProduct.getCreatedAt());
 		adminProductInfoById.setUpdatedAt(updatedProduct.getUpdatedAt());
-		
+
 		return adminProductInfoById;
 	}
 }
