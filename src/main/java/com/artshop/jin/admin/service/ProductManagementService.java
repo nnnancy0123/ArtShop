@@ -2,10 +2,15 @@ package com.artshop.jin.admin.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +28,8 @@ import com.artshop.jin.admin.repository.ProductManagementRepository;
 public class ProductManagementService {
 	@Autowired
 	private ProductManagementRepository productManagementRepository;
+	@Value("${app.upload.path}")
+	private String uploadDir;
 
 	/**
 	 * 画面から登録された情報をEntityに変換して保存し、保存結果もDTOで返す
@@ -31,13 +38,6 @@ public class ProductManagementService {
 	 */
 	public ProductInfoDto createProductInfo(ProductInfoDto adminProductInfo, MultipartFile productPhoto)
 			throws IOException {
-
-		String uploadDir = "uploads/";
-		File uploadDirFile = new File(uploadDir);
-
-		if (!uploadDirFile.exists()) {
-			uploadDirFile.mkdirs(); // 创建 uploads 文件夹
-		}
 
 		ProductInfoEntity adminProductManagementEntity = new ProductInfoEntity();
 		adminProductManagementEntity.setProductId(adminProductInfo.getProductId());
@@ -49,15 +49,27 @@ public class ProductManagementService {
 		adminProductManagementEntity.setStockStatus(adminProductInfo.getStockStatus());
 		adminProductManagementEntity.setDelFlag(adminProductInfo.getDelFlag());
 
-		// 如果有上传文件，处理图片上传
+		File uploadDirFile = new File(uploadDir);
+
+		//ディレクトリが存在しない場合、新しく作成する
+		if (!uploadDirFile.exists()) {
+			uploadDirFile.mkdirs();
+		}
+
+		// ファイルを存在することを確認、ある場合、アップロード
 		if (productPhoto != null && !productPhoto.isEmpty()) {
+
+			// アップロードされた元のファイル名を取得
 			String fileName = productPhoto.getOriginalFilename();
-			String filePath = uploadDir + fileName;
-
-			productPhoto.transferTo(new File(filePath));
-
-			// 设置图片文件名到数据库
-			adminProductManagementEntity.setProductPhoto(fileName);
+			String extension = fileName.substring(fileName.lastIndexOf("."));
+			// ファイル名をかぶられないようにUUIDを使う
+			String uniqueFileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + extension;
+			// フルパスを作成（uploads/フォルダに保存）
+			Path savePath = Paths.get(uploadDir, uniqueFileName);
+			// ファイルをローカルに保存
+			Files.copy(productPhoto.getInputStream(), savePath);
+			// ファイルをDBに保存する
+			adminProductManagementEntity.setProductPhoto(uniqueFileName);
 		}
 
 		//画面の商品情報をEntityにマッピングする
@@ -90,19 +102,19 @@ public class ProductManagementService {
 		List<ProductInfoDto> adminProductDtoList = new ArrayList<>();
 
 		for (ProductInfoEntity adminProductManagementEntity : allProductInfo) {
-			ProductInfoDto adminProductManagementDto = new ProductInfoDto();
-			adminProductManagementDto.setProductId(adminProductManagementEntity.getProductId());
-			adminProductManagementDto.setProductName(adminProductManagementEntity.getProductName());
-			adminProductManagementDto.setProductDescription(adminProductManagementEntity.getProductDescription());
-			adminProductManagementDto.setCategoryName(adminProductManagementEntity.getCategoryName());
-			adminProductManagementDto.setPrice(adminProductManagementEntity.getPrice());
-			adminProductManagementDto.setStockQuantity(adminProductManagementEntity.getStockQuantity());
-			adminProductManagementDto.setStockStatus(adminProductManagementEntity.getStockStatus());
-			adminProductManagementDto.setDelFlag(adminProductManagementEntity.getDelFlag());
-			adminProductManagementDto.setProductPhoto(adminProductManagementEntity.getProductPhoto());
-			adminProductManagementDto.setCreatedAt(adminProductManagementEntity.getCreatedAt());
-			adminProductManagementDto.setUpdatedAt(adminProductManagementEntity.getUpdatedAt());
-			adminProductDtoList.add(adminProductManagementDto);
+			ProductInfoDto productManagementDto = new ProductInfoDto();
+			productManagementDto.setProductId(adminProductManagementEntity.getProductId());
+			productManagementDto.setProductName(adminProductManagementEntity.getProductName());
+			productManagementDto.setProductDescription(adminProductManagementEntity.getProductDescription());
+			productManagementDto.setCategoryName(adminProductManagementEntity.getCategoryName());
+			productManagementDto.setPrice(adminProductManagementEntity.getPrice());
+			productManagementDto.setStockQuantity(adminProductManagementEntity.getStockQuantity());
+			productManagementDto.setStockStatus(adminProductManagementEntity.getStockStatus());
+			productManagementDto.setDelFlag(adminProductManagementEntity.getDelFlag());
+			productManagementDto.setProductPhoto(adminProductManagementEntity.getProductPhoto());
+			productManagementDto.setCreatedAt(adminProductManagementEntity.getCreatedAt());
+			productManagementDto.setUpdatedAt(adminProductManagementEntity.getUpdatedAt());
+			adminProductDtoList.add(productManagementDto);
 		}
 		// 商品一覧リストに返却する
 		return adminProductDtoList;

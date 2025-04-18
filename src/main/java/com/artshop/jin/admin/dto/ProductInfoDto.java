@@ -38,7 +38,7 @@ public class ProductInfoDto {
 	}
 
 	public ProductInfoDto(Long productId, String productName, String productDescription, String categoryName,
-			BigDecimal price, int stockQuantity, String stockStatus, String productPhoto) {
+			BigDecimal price, int stockQuantity, String stockStatus, String  productPhoto) {
 		this.productId = productId;
 		this.productName = productName;
 		this.productDescription = productDescription;

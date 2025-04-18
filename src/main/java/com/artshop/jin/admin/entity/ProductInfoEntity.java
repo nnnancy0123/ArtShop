@@ -51,7 +51,7 @@ public class ProductInfoEntity {
 	private String stockStatus;
 
 	// 商品写真
-	private String productPhoto;
+	private String  productPhoto;
 
 	// 削除フラグ
 	private String delFlag;
@@ -166,14 +166,14 @@ public class ProductInfoEntity {
 	/**
 	 * @return productPhoto
 	 */
-	public String getProductPhoto() {
+	public String  getProductPhoto() {
 		return productPhoto;
 	}
 
 	/**
 	 * @param productPhoto セットする productPhoto
 	 */
-	public void setProductPhoto(String productPhoto) {
+	public void setProductPhoto(String  productPhoto) {
 		this.productPhoto = productPhoto;
 	}
 

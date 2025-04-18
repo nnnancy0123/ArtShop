@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -71,16 +70,16 @@ public class ProductManagementController {
 
 		if (productPhoto != null && !productPhoto.isEmpty()) {
 			adminProductManagementDto.setProductPhoto(productPhoto.getOriginalFilename());
-		}
 
-		try {
-			ProductInfoDto result = adminProductManagementService.createProductInfo(adminProductManagementDto,
-					productPhoto);
-			return ResponseEntity.ok(result);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("商品登録に失敗しました");
+			try {
+				ProductInfoDto result = adminProductManagementService.createProductInfo(adminProductManagementDto,
+						productPhoto);
+				return ResponseEntity.ok(result);
+			} catch (IOException e) {
+				return ResponseEntity.internalServerError().body("アップロード失敗: " + e.getMessage());
+			}
 		}
+		return ResponseEntity.badRequest().body("商品画像が未選択です");
 	}
 
 	/**
