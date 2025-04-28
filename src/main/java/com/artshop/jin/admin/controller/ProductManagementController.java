@@ -26,98 +26,77 @@ import com.artshop.jin.admin.service.ProductManagementService;
  * 商品情報管理コントローラ
  * @author Nancy
  * @since 2025-03-28
- * @version 2.1
+ * @version 2.2
  */
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductManagementController {
 
-	@Autowired
-	private ProductManagementService adminProductManagementService;
+    @Autowired
+    private ProductManagementService adminProductManagementService;
 
-	/**
-	 * 商品登録
-	 * @param productName 商品名
-	 * @param productDescription 商品紹介
-	 * @param categoryName 商品カテゴリ
-	 * @param price 商品価格
-	 * @param stockQuantity 在庫数
-	 * @param stockStatus 販売状態（0=販売中, 1=停止中）
-	 * @param delFlag 表示フラグ（0=表示, 1=非表示）
-	 * @param productPhoto 商品画像
-	 * @return 登録結果（商品情報DTO）
-	 */
-	@PostMapping
-	public ResponseEntity<?> createProductInfo(
-			@RequestParam("productName") String productName,
-			@RequestParam("productDescription") String productDescription,
-			@RequestParam("categoryName") String categoryName,
-			@RequestParam("price") BigDecimal price,
-			@RequestParam("stockQuantity") int stockQuantity,
-			@RequestParam("stockStatus") String stockStatus,
-			@RequestParam("delFlag") String delFlag,
-			@RequestParam(value = "productPhoto", required = false) MultipartFile productPhoto) {
+    /**
+     * 商品登録
+     */
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createProductInfo(
+            @RequestParam("productName") String productName,
+            @RequestParam("productDescription") String productDescription,
+            @RequestParam("categoryName") String categoryName,
+            @RequestParam("price") BigDecimal price,
+            @RequestParam("stockQuantity") int stockQuantity,
+            @RequestParam("stockStatus") String stockStatus,
+            @RequestParam("delFlag") String delFlag,
+            @RequestParam(value = "productImg", required = false) MultipartFile productImg) {
 
-		ProductInfoDto adminProductManagementDto = new ProductInfoDto();
-		adminProductManagementDto.setProductName(productName);
-		adminProductManagementDto.setProductDescription(productDescription);
-		adminProductManagementDto.setCategoryName(categoryName);
-		adminProductManagementDto.setPrice(price);
-		adminProductManagementDto.setStockQuantity(stockQuantity);
-		adminProductManagementDto.setStockStatus(stockStatus);
-		adminProductManagementDto.setDelFlag(delFlag);
+        ProductInfoDto adminProductManagementDto = new ProductInfoDto();
+        adminProductManagementDto.setProductName(productName);
+        adminProductManagementDto.setProductDescription(productDescription);
+        adminProductManagementDto.setCategoryName(categoryName);
+        adminProductManagementDto.setPrice(price);
+        adminProductManagementDto.setStockQuantity(stockQuantity);
+        adminProductManagementDto.setStockStatus(stockStatus);
+        adminProductManagementDto.setDelFlag(delFlag);
 
-		if (productPhoto != null && !productPhoto.isEmpty()) {
-			adminProductManagementDto.setProductPhoto(productPhoto.getOriginalFilename());
+        try {
+            ProductInfoDto result = adminProductManagementService.createProductInfo(adminProductManagementDto, productImg);
+            return ResponseEntity.ok(result);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("アップロード失敗: " + e.getMessage());
+        }
+    }
 
-			try {
-				ProductInfoDto result = adminProductManagementService.createProductInfo(adminProductManagementDto,
-						productPhoto);
-				return ResponseEntity.ok(result);
-			} catch (IOException e) {
-				return ResponseEntity.internalServerError().body("アップロード失敗: " + e.getMessage());
-			}
-		}
-		return ResponseEntity.badRequest().body("商品画像が未選択です");
-	}
+    /**
+     * 全ての商品情報を検索する
+     */
+    @GetMapping
+    public ResponseEntity<List<ProductInfoDto>> getProductInfo() {
+        List<ProductInfoDto> allProductInfo = adminProductManagementService.findAllProductInfo();
+        return ResponseEntity.ok(allProductInfo);
+    }
 
-	/**
-	 * 全ての商品情報を検索する
-	 * @return 全ての商品情報
-	 */
-	@GetMapping
-	public ResponseEntity<List<ProductInfoDto>> getProductInfo() {
+    /**
+     * 商品IDによって商品情報を削除する
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProductInfo(@PathVariable Long id) {
+        adminProductManagementService.deleteProductById(id);
+        return ResponseEntity.ok("削除成功しました");
+    }
 
-		List<ProductInfoDto> alllProductInfo = adminProductManagementService.findAllProductInfo();
-		return ResponseEntity.ok(alllProductInfo);
-	}
+    /**
+     * 編集した商品情報を更新
+     */
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductInfoDto> updateProductInfo(
+            @PathVariable Long id,
+            @ModelAttribute ProductInfoDto productInfo,
+            @RequestParam(value = "productImg", required = false) MultipartFile productImg) {
 
-	/**
-	 * 商品IDによって商品情報を削除する
-	 * @param id
-	 * @return メッセージ
-	 */
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleletProductInfo(@PathVariable Long id) {
+        productInfo.setProductId(id);
 
-		adminProductManagementService.deleteProductById(id);
-		return ResponseEntity.ok("削除成功しました");
-	}
-
-	/**
-	 * 編集した商品情報を更新
-	 * @param productInfo
-	 * @return newProductInfo
-	 */
-	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<ProductInfoDto> updateProductInfo(@PathVariable Long id,
-			@ModelAttribute ProductInfoDto productInfo) {
-
-		//パスのIDとリクエストボディのIDを一致させるために設定
-		productInfo.setProductId(id);
-
-		ProductInfoDto updateProductInfo = adminProductManagementService.updateProductInfo(productInfo);
-		return ResponseEntity.ok(updateProductInfo);
-	}
+        ProductInfoDto updatedProductInfo = adminProductManagementService.updateProductInfo(productInfo, productImg);
+        return ResponseEntity.ok(updatedProductInfo);
+    }
 }
